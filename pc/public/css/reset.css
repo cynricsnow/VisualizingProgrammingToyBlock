@@ -1,0 +1,30 @@
+.container {
+    height: 100%;
+    position: relative;
+}
+
+.navbar {
+    background-color: rgba(248, 248, 248, 0.8);
+    margin-bottom: 10px;
+    z-index: 100;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.navbar-brand img {
+    height: 40px;
+    width: 40px;
+    margin-right: 5px;
+}
+
+.injectionDiv {
+    border-radius: 4px;
+}
+
+.blocklyToolboxDiv {
+    min-width: 88px;
+}

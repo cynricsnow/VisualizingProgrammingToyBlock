@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>编程积木可视化</title>
+        <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./styles.css">
+        <script src="controllers/acorn_interpreter.js"></script>
+        <script src="controllers/blockly_compressed.js"></script>
+        <script src="controllers/blocks_compressed.js"></script>
+        <script src="controllers/javascript_compressed.js"></script>
+        <script src="controllers/custom.js"></script>
+        <script src="controllers/zh-hans.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-menu">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#"><img alt="VISUAL" src="./images/logo.png">VISUAL</a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbar-menu">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="./index.html">对接积木</a></li>
+                            <li class="active"><a href="#">独立模式</a></li>
+                            <li><a href="./observe.html">观察模式</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="content">
+                <div class="blockly">
+                    <div id="blockly-blocks">
+
+                    </div>
+                    <section id="blockly-result">
+                        <p id="blockly-log"></p>
+                        <div id="blockly-controller">
+                            <button type="button" class="btn" id="blockly-run"><span class="glyphicon glyphicon-play"></span></button>
+                            <button type="button" class="btn" id="blockly-step"><span class="glyphicon glyphicon-step-forward"></span></button>
+                            <button type="button" class="btn" id="blockly-forward"><span class="glyphicon glyphicon-forward"></span></button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <xml id="toolbox" style="display: none">
+            <category id="catLogic" colour="210" name="逻辑">
+                <block type="controls_if"></block>
+                <block type="logic_compare"></block>
+                <block type="logic_operation"></block>
+                <block type="logic_negate"></block>
+                <block type="logic_boolean"></block>
+                <block type="logic_null"></block>
+                <block type="logic_ternary"></block>
+            </category>
+            <category id="catLoops" colour="120" name="循环">
+                <block type="controls_repeat_ext">
+                    <value name="TIMES">
+                        <shadow type="math_number">
+                            <field name="NUM">10</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="controls_whileUntil"></block>
+                <block type="controls_for">
+                    <value name="FROM">
+                        <shadow type="math_number">
+                            <field name="NUM">1</field>
+                        </shadow>
+                    </value>
+                    <value name="TO">
+                        <shadow type="math_number">
+                            <field name="NUM">10</field>
+                        </shadow>
+                    </value>
+                    <value name="BY">
+                        <shadow type="math_number">
+                            <field name="NUM">1</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="controls_forEach"></block>
+                <block type="controls_flow_statements"></block>
+            </category>
+            <category id="catMath" colour="230" name="公式">
+                <block type="math_number"></block>
+                <block type="math_arithmetic">
+                    <value name="A">
+                        <shadow type="math_number">
+                            <field name="NUM">1</field>
+                        </shadow>
+                    </value>
+                    <value name="B">
+                        <shadow type="math_number">
+                            <field name="NUM">1</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="math_single">
+                    <value name="NUM">
+                        <shadow type="math_number">
+                            <field name="NUM">9</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="math_trig">
+                    <value name="NUM">
+                        <shadow type="math_number">
+                            <field name="NUM">45</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="math_constant"></block>
+                <block type="math_number_property">
+                    <value name="NUMBER_TO_CHECK">
+                        <shadow type="math_number">
+                            <field name="NUM">0</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="math_change">
+                    <value name="DELTA">
+                        <shadow type="math_number">
+                            <field name="NUM">1</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="math_round">
+                    <value name="NUM">
+                        <shadow type="math_number">
+                            <field name="NUM">3.1</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="math_on_list"></block>
+                <block type="math_modulo">
+                    <value name="DIVIDEND">
+                        <shadow type="math_number">
+                            <field name="NUM">64</field>
+                        </shadow>
+                    </value>
+                    <value name="DIVISOR">
+                        <shadow type="math_number">
+                            <field name="NUM">10</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="math_constrain">
+                    <value name="VALUE">
+                        <shadow type="math_number">
+                            <field name="NUM">50</field>
+                        </shadow>
+                    </value>
+                    <value name="LOW">
+                        <shadow type="math_number">
+                            <field name="NUM">1</field>
+                        </shadow>
+                    </value>
+                    <value name="HIGH">
+                        <shadow type="math_number">
+                            <field name="NUM">100</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="math_random_int">
+                    <value name="FROM">
+                        <shadow type="math_number">
+                            <field name="NUM">1</field>
+                        </shadow>
+                    </value>
+                    <value name="TO">
+                        <shadow type="math_number">
+                            <field name="NUM">100</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="math_random_float"></block>
+            </category>
+            <category id="catText" colour="160" name="文本">
+                <block type="text"></block>
+                <block type="text_join"></block>
+                <block type="text_append">
+                    <value name="TEXT">
+                        <shadow type="text"></shadow>
+                    </value>
+                </block>
+                <block type="text_length">
+                    <value name="VALUE">
+                        <shadow type="text">
+                            <field name="TEXT">abc</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="text_isEmpty">
+                    <value name="VALUE">
+                        <shadow type="text">
+                            <field name="TEXT"></field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="text_indexOf">
+                    <value name="VALUE">
+                        <block type="variables_get">
+                            <field name="VAR">text</field>
+                        </block>
+                    </value>
+                    <value name="FIND">
+                        <shadow type="text">
+                            <field name="TEXT">abc</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="text_charAt">
+                    <value name="VALUE">
+                        <block type="variables_get">
+                            <field name="VAR">text</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="text_getSubstring">
+                    <value name="STRING">
+                        <block type="variables_get">
+                            <field name="VAR">text</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="text_changeCase">
+                    <value name="TEXT">
+                        <shadow type="text">
+                            <field name="TEXT">abc</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="text_trim">
+                    <value name="TEXT">
+                        <shadow type="text">
+                            <field name="TEXT">abc</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="text_output">
+                    <value name="TEXT">
+                        <shadow type="text">
+                            <field name="TEXT">abc</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="text_prompt_ext">
+                    <value name="TEXT">
+                        <shadow type="text">
+                            <field name="TEXT">abc</field>
+                        </shadow>
+                    </value>
+                </block>
+            </category>
+            <category id="catLists" colour="260" name="列表">
+                <block type="lists_create_with">
+                    <mutation items="0"></mutation>
+                </block>
+                <block type="lists_create_with"></block>
+                <block type="lists_repeat">
+                    <value name="NUM">
+                        <shadow type="math_number">
+                            <field name="NUM">5</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="lists_length"></block>
+                <block type="lists_isEmpty"></block>
+                <block type="lists_indexOf">
+                    <value name="VALUE">
+                        <block type="variables_get">
+                            <field name="VAR">list</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="lists_getIndex">
+                    <value name="VALUE">
+                        <block type="variables_get">
+                            <field name="VAR">list</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="lists_setIndex">
+                    <value name="LIST">
+                        <block type="variables_get">
+                            <field name="VAR">list</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="lists_getSublist">
+                    <value name="LIST">
+                        <block type="variables_get">
+                            <field name="VAR">list</field>
+                        </block>
+                    </value>
+                </block>
+                <block type="lists_split">
+                    <value name="DELIM">
+                        <shadow type="text">
+                            <field name="TEXT">,</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="lists_sort"></block>
+            </category>
+            <category id="catColour" colour="20" name="颜色">
+                <block type="colour_picker"></block>
+                <block type="colour_random"></block>
+                <block type="colour_rgb">
+                    <value name="RED">
+                        <shadow type="math_number">
+                            <field name="NUM">100</field>
+                        </shadow>
+                    </value>
+                    <value name="GREEN">
+                        <shadow type="math_number">
+                            <field name="NUM">50</field>
+                        </shadow>
+                    </value>
+                    <value name="BLUE">
+                        <shadow type="math_number">
+                            <field name="NUM">0</field>
+                        </shadow>
+                    </value>
+                </block>
+                <block type="colour_blend">
+                    <value name="COLOUR1">
+                        <shadow type="colour_picker">
+                            <field name="COLOUR">#ff0000</field>
+                        </shadow>
+                    </value>
+                    <value name="COLOUR2">
+                        <shadow type="colour_picker">
+                            <field name="COLOUR">#3333ff</field>
+                        </shadow>
+                    </value>
+                    <value name="RATIO">
+                        <shadow type="math_number">
+                            <field name="NUM">0.5</field>
+                        </shadow>
+                    </value>
+                </block>
+            </category>
+            <sep></sep>
+            <category id="catVariables" colour="330" custom="VARIABLE" name="变量"></category>
+            <category id="catFunctions" colour="290" custom="PROCEDURE" name="函数"></category>
+        </xml>
+        <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script>
+            var workspace = Blockly.inject('blockly-blocks', {
+                media: './media/',
+                toolbox: document.getElementById('toolbox')
+            });
+            var output = document.getElementById('blockly-log');
+            var myInterpreter = null;
+            var highlightPause = false;
+            var parse = false;
+
+            function initApi(interpreter, scope) {
+                var wrapper = function(node) {
+                    return interpreter.createPrimitive(output.appendChild(node));
+                };
+                interpreter.setProperty(scope, 'outputAppendChild', interpreter.createNativeFunction(wrapper));
+
+                var wrapper = function(text) {
+                    text = text ? text.toString() : '';
+                    return interpreter.createPrimitive(output.appendChild(document.createTextNode(text)));
+                };
+                interpreter.setProperty(scope, 'outputAppendText', interpreter.createNativeFunction(wrapper));
+
+                interpreter.setProperty(scope, 'createColorDiv', interpreter.createNativeFunction(createColorDiv));
+
+                var wrapper = function(id) {
+                    id = id ? id.toString() : '';
+                    return interpreter.createPrimitive(highlightBlock(id));
+                };
+                interpreter.setProperty(scope, 'highlightBlock', interpreter.createNativeFunction(wrapper));
+            }
+
+
+            function highlightBlock(id) {
+                workspace.highlightBlock(id);
+                highlightPause = true;
+            }
+
+            function parseCode() {
+                output.innerHTML = '解析中...\n';
+                window.LoopTrap = 1000;
+                Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+                Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+                Blockly.JavaScript.addReservedWords('highlightBlock');
+                var code = Blockly.JavaScript.workspaceToCode(workspace);
+                Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+                myInterpreter = new Interpreter(code, initApi);
+                highlightPause = false;
+                parse = true;
+                workspace.highlightBlock(null);
+            }
+
+            function runCode() {
+                document.getElementById('blockly-step').disabled = 'disabled';
+                document.getElementById('blockly-forward').disabled = 'disabled';
+                window.LoopTrap = 1000;
+                Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+                var code = Blockly.JavaScript.workspaceToCode(workspace);
+                Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+                try {
+                    output.innerHTML = '运行中...\n';
+                    console.log(code)
+                    eval(code);
+                } catch (e) {
+                    alert(e);
+                } finally {
+                    workspace.highlightBlock(null);
+                    parse = false;
+                    output.firstChild.data = '运行完毕\n';
+                    document.getElementById('blockly-step').disabled = '';
+                    document.getElementById('blockly-forward').disabled = '';
+                }
+            }
+
+            function stepCode() {
+                try {
+                    if (!parse) {
+                        parseCode();
+                        output.innerHTML = '运行中...\n';
+                    }
+                    var ok = myInterpreter.step();
+                } finally {
+                    if (!ok) {
+                        output.firstChild.data = '运行完毕\n';
+                        workspace.highlightBlock(null);
+                        myInterpreter = null;
+                        parse = false;
+                        return;
+                    }
+                }
+                if (highlightPause) {
+                    highlightPause = false;
+                } else {
+                    stepCode();
+                }
+            }
+
+            function forwardCode() {
+                document.getElementById('blockly-run').disabled = 'disabled';
+                document.getElementById('blockly-step').disabled = 'disabled';
+                if (!parse) {
+                    parseCode();
+                    output.innerHTML = '运行中...\n';
+                }
+                function nextStep() {
+                    if (myInterpreter.step()) {
+                        window.setTimeout(nextStep, 10);
+                    } else {
+                        window.setTimeout(function() {
+                            workspace.highlightBlock(null);
+                            myInterpreter = null;
+                            output.firstChild.data = '运行完毕\n';
+                            parse = false;
+                            document.getElementById('blockly-run').disabled = '';
+                            document.getElementById('blockly-step').disabled = '';
+                        }, 10);
+                    }
+                }
+                try {
+                    nextStep();
+                } catch (e) {
+                    alert(e);
+                }
+            }
+            document.getElementById('blockly-run').onclick = runCode;
+            document.getElementById('blockly-step').onclick = stepCode;
+            document.getElementById('blockly-forward').onclick = forwardCode;
+        </script>
+    </body>
+</html>
