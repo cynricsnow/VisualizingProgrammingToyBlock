@@ -1,3 +1,4 @@
+'use strict'
 const toolbox = (
     `<xml id="toolbox" style="display: none">
         <category id="catLogic" colour="210" name="逻辑">

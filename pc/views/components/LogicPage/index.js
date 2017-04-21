@@ -1,6 +1,9 @@
 'use strict'
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
+import loadXMLString from '../../common/loadXMLString';
+import { logic_modify } from '../../redux/actions';
 import './custom';
 import toolbox from './toolbox';
 import styles from './styles.css';
@@ -12,31 +15,22 @@ let myInterpreter = null;
 let highlightPause = false;
 let parse = false;
 
-import workspaceBlocks from './workspaceBlocks.js';
-
-const loadXMLString = text => {
-    try {
-        let XMLDoc = new ActiveXObject('Microsoft.XMLDOM');
-        XMLDoc.async = false;
-        XMLDoc.loadXML(text);
-        return XMLDoc;
-    } catch (e) {
-        try {
-            let parser = new DOMParser();
-            let XMLDoc = parser.parseFromString(text, 'text/xml');
-            return XMLDoc;
-        } catch (e) {
-            alert(e);
+@connect(
+    state => ({
+        workspaceBlocks: state.logic
+    }),
+    dispatch => ({
+        update(xml) {
+            dispatch(logic_modify(xml));
         }
-    }
-    return;
-}
-
+    })
+)
 class LogicPage extends Component {
     state = {
         workspace: null
     }
     componentDidMount() {
+        const { workspaceBlocks } = this.props;
         const { output } = this.refs;
 
         outputAppendText = (output => text => output.appendChild(document.createTextNode(text)))(output);
@@ -46,15 +40,24 @@ class LogicPage extends Component {
             div.style.backgroundColor = color;
             return div;
         })(output);
-
+        const xml = loadXMLString(toolbox).childNodes[0]
         const workspace = Blockly.inject('blockly-blocks', {
             media: './media/',
-            toolbox
+            toolbox: xml
         });
-        Blockly.Xml.domToWorkspace(loadXMLString(workspaceBlocks).childNodes[0], workspace);
+        if (workspaceBlocks) {
+            Blockly.Xml.domToWorkspace(workspaceBlocks, workspace);
+        }
         this.setState({
             workspace
         })
+    }
+    componentWillUnmount() {
+        const { update } = this.props;
+        const { workspace } = this.state;
+
+        const XMLDom = Blockly.Xml.workspaceToDom(workspace);
+        update(XMLDom);
     }
     runCode() {
         const { workspace } = this.state;

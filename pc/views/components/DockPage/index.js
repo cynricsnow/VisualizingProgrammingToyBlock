@@ -1,11 +1,24 @@
 'use strict'
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
+import { dock } from '../../redux/actions';
 import cube from './cube.png';
 import styles from './styles.css';
 
+@connect(
+    state => ({
+        toyBlocks: state.dock
+    }),
+    dispatch => ({
+        handleClick(e) {
+            this.draw();
+            dispatch(dock());
+        }
+    })
+)
 class DockPage extends Component {
-    dock() {
+    draw(blocks) {
         const { canvas } = this.refs;
         const cxt = canvas.getContext('2d');
         cxt.clearRect(0, 0, canvas.width, canvas.height);
@@ -24,14 +37,21 @@ class DockPage extends Component {
         cxt.fillStyle = '#a5745b';
         cxt.fillRect(108, 82, 20, 20);
     }
+    componentDidMount() {
+        const { toyBlocks, handleClick } = this.props;
+        if (toyBlocks) {
+            this.draw();
+        }
+    }
     render() {
+        const { handleClick } = this.props;
         return (
             <div className={styles.dock}>
                 <div className={styles.result}>
                     <canvas ref='canvas'></canvas>
                 </div>
                 <div className={styles.controller}>
-                    <button type='button' className='btn' onClick={this.dock.bind(this)}><img src={cube}/></button>
+                    <button type='button' className='btn' onClick={handleClick.bind(this)}><img src={cube}/></button>
                 </div>
             </div>
         )
