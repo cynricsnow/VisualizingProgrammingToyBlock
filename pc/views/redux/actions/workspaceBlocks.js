@@ -29,7 +29,7 @@ const workspaceBlocks = (
                 </value>
                 <value name="B">
                   <block type="math_number">
-                    <field name="NUM">0</field>
+                    <field name="NUM">1</field>
                   </block>
                 </value>
               </block>
