@@ -35,7 +35,7 @@ const workspaceBlocks = (
               </block>
             </value>
             <statement name="DO0">
-              <block type="text_print">
+              <block type="text_output">
                 <value name="TEXT">
                   <block type="text">
                     <field name="TEXT">hello</field>
@@ -61,7 +61,7 @@ const workspaceBlocks = (
                   </block>
                 </value>
                 <statement name="DO0">
-                  <block type="text_print">
+                  <block type="text_output">
                     <value name="TEXT">
                       <block type="colour_random"></block>
                     </value>
@@ -85,7 +85,7 @@ const workspaceBlocks = (
                       </block>
                     </value>
                     <statement name="DO0">
-                      <block type="text_print">
+                      <block type="text_output">
                         <value name="TEXT">
                           <block type="text">
                             <field name="TEXT">world</field>
