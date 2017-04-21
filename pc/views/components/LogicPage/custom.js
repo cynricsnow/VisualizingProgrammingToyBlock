@@ -1,13 +1,16 @@
 Blockly.Blocks.text_output = {
-    init: function () {
+    init() {
         this.jsonInit({
-            message0:Blockly.Msg.TEXT_PRINT_TITLE,
-            args0:[{type:"input_value",name:"TEXT"}],
-            previousStatement:null,
-            nextStatement:null,
-            colour:Blockly.Blocks.texts.HUE,
-            tooltip:Blockly.Msg.TEXT_PRINT_TOOLTIP,
-            helpUrl:Blockly.Msg.TEXT_PRINT_HELPURL
+            message0: Blockly.Msg.TEXT_PRINT_TITLE,
+            args0: [{
+                type:"input_value",
+                name:"TEXT"
+            }],
+            previousStatement: null,
+            nextStatement: null,
+            colour: Blockly.Blocks.texts.HUE,
+            tooltip: Blockly.Msg.TEXT_PRINT_TOOLTIP,
+            helpUrl: Blockly.Msg.TEXT_PRINT_HELPURL
         })
     }
 };

@@ -12,12 +12,33 @@ let myInterpreter = null;
 let highlightPause = false;
 let parse = false;
 
+import workspaceBlocks from './workspaceBlocks.js';
+
+const loadXMLString = text => {
+    try {
+        let XMLDoc = new ActiveXObject('Microsoft.XMLDOM');
+        XMLDoc.async = false;
+        XMLDoc.loadXML(text);
+        return XMLDoc;
+    } catch (e) {
+        try {
+            let parser = new DOMParser();
+            let XMLDoc = parser.parseFromString(text, 'text/xml');
+            return XMLDoc;
+        } catch (e) {
+            alert(e);
+        }
+    }
+    return;
+}
+
 class LogicPage extends Component {
     state = {
         workspace: null
     }
     componentDidMount() {
         const { output } = this.refs;
+
         outputAppendText = (output => text => output.appendChild(document.createTextNode(text)))(output);
         outputAppendChild = (output => node => output.appendChild(node))(output);
         createColorDiv = (output => color => {
@@ -25,10 +46,12 @@ class LogicPage extends Component {
             div.style.backgroundColor = color;
             return div;
         })(output);
+
         const workspace = Blockly.inject('blockly-blocks', {
             media: './media/',
             toolbox
         });
+        Blockly.Xml.domToWorkspace(loadXMLString(workspaceBlocks).childNodes[0], workspace);
         this.setState({
             workspace
         })
@@ -36,12 +59,15 @@ class LogicPage extends Component {
     runCode() {
         const { workspace } = this.state;
         const { output, step, forward } = this.refs;
+
         step.disabled = 'disabled';
         forward.disabled = 'disabled';
         window.LoopTrap = 1000;
         Blockly.JavaScript.STATEMENT_PREFIX = null;
         Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+
         const code = Blockly.JavaScript.workspaceToCode(workspace);
+
         Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
         try {
             output.innerHTML = '运行中...\n';
@@ -59,14 +85,18 @@ class LogicPage extends Component {
     initApi(interpreter, scope) {
         const { output } = this.refs;
         let wrapper = null;
+
         wrapper = node => interpreter.createPrimitive(output.appendChild(node));
         interpreter.setProperty(scope, 'outputAppendChild', interpreter.createNativeFunction(wrapper));
+
         wrapper = text => {
             text = text ? text.toString() : '';
             return interpreter.createPrimitive(output.appendChild(document.createTextNode(text)));
         };
         interpreter.setProperty(scope, 'outputAppendText', interpreter.createNativeFunction(wrapper));
+
         interpreter.setProperty(scope, 'createColorDiv', interpreter.createNativeFunction(createColorDiv));
+
         wrapper = id => {
             id = id ? id.toString() : '';
             return interpreter.createPrimitive(this.highlightBlock.bind(this)(id));
@@ -75,18 +105,22 @@ class LogicPage extends Component {
     }
     highlightBlock(id) {
         const { workspace } = this.state;
+
         workspace.highlightBlock(id);
         highlightPause = true;
     }
     parseCode() {
         const { workspace } = this.state;
         const { output } = this.refs;
+
         output.innerHTML = '解析中...\n';
         window.LoopTrap = 1000;
         Blockly.JavaScript.INFINITE_LOOP_TRAP = 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
         Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
         Blockly.JavaScript.addReservedWords('highlightBlock');
+
         const code = Blockly.JavaScript.workspaceToCode(workspace);
+
         Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
         myInterpreter = new Interpreter(code, this.initApi.bind(this));
         highlightPause = false;
@@ -97,6 +131,7 @@ class LogicPage extends Component {
         const { workspace } = this.state;
         const { output } = this.refs;
         let ok = null;
+
         try {
             if (!parse) {
                 this.parseCode.bind(this)();
@@ -121,6 +156,7 @@ class LogicPage extends Component {
     forwardCode() {
         const { workspace } = this.state;
         const { output, run, step } = this.refs;
+
         run.disabled = 'disabled';
         step.disabled = 'disabled';
         if (!parse) {
