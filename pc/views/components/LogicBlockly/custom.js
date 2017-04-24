@@ -3,9 +3,9 @@ Blockly.Msg.INPUT_TEMPERATUE_TOOLTIP = '模拟温度传感器数据';
 Blockly.Msg.INPUT_DISTANCE_TITLE = '超声波传感器(cm)';
 Blockly.Msg.INPUT_DISTANCE_TOOLTIP = '模拟超声波传感器数据';
 
-Blockly.Msg.OUTPUT_FORWARD_TITLE = '前进 %1';
+Blockly.Msg.OUTPUT_FORWARD_TITLE = '前进 %1 厘米';
 Blockly.Msg.OUTPUT_FORWARD_TOOLTIP = '控制机器人向前移动';
-Blockly.Msg.OUTPUT_BACK_TITLE = '后退 %1';
+Blockly.Msg.OUTPUT_BACK_TITLE = '后退 %1 厘米';
 Blockly.Msg.OUTPUT_BACK_TOOLTIP = '控制机器人向后移动';
 Blockly.Msg.OUTPUT_CLOCKWISEROTATE_TITLE = '顺时针旋转 %1';
 Blockly.Msg.OUTPUT_CLOCKWISEROTATE_TOOLTIP = '控制机器人顺时针旋转';
@@ -34,7 +34,7 @@ Blockly.Blocks.input_temperature = {
 }
 
 Blockly.JavaScript.input_temperature = function (block) {
-  const code = '(Math.random() * 50).toFixed(1)';
+  const code = '(Math.random() * 80 - 30).toFixed(1)';
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
 
@@ -62,7 +62,7 @@ Blockly.Blocks.output_forward = {
                 type: 'field_number',
                 name: 'DISTANCE',
                 value: 10,
-                min: 0,
+                min: 1,
                 max: 100
             }],
             previousStatement: null,
@@ -87,7 +87,7 @@ Blockly.Blocks.output_back = {
                 type: 'field_number',
                 name: 'DISTANCE',
                 value: 10,
-                min: 0,
+                min: 1,
                 max: 100
             }],
             previousStatement: null,

@@ -20,8 +20,8 @@ import styles from './styles.css';
 class DockContent extends Component {
     draw(blocks) {
         const { canvas } = this.refs;
-        const cxt = canvas.getContext('2d');
-        cxt.clearRect(0, 0, canvas.width, canvas.height);
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         let xy = [];
         for (let i = 0; i < 10; i++) {
             xy[i] = [];
@@ -29,37 +29,37 @@ class DockContent extends Component {
                 xy[i][j] = [42 + 22 * i, 22 * j, 20, 20];
             }
         }
-        cxt.fillStyle = '#FFF';
-        cxt.fillRect(0, 56, 40, 40);
-        cxt.fillRect(...xy[2][3]);
-        cxt.fillRect(...xy[2][4]);
-        cxt.fillRect(...xy[4][3]);
-        cxt.fillRect(...xy[4][4]);
-        cxt.fillRect(...xy[6][3]);
-        cxt.fillRect(...xy[9][3]);
-        cxt.fillStyle = '#745ba5';
-        cxt.fillRect(...xy[0][3]);
-        cxt.fillRect(...xy[3][3]);
-        cxt.fillRect(...xy[3][4]);
-        cxt.fillRect(...xy[8][3]);
-        cxt.fillRect(...xy[8][4]);
-        cxt.fillStyle = '#5ba58c';
-        cxt.fillRect(...xy[0][2]);
-        cxt.fillStyle = '#5b80a5';
-        cxt.fillRect(...xy[1][1]);
-        cxt.fillRect(...xy[1][3]);
-        cxt.fillRect(...xy[1][4]);
-        cxt.fillRect(...xy[7][1]);
-        cxt.fillRect(...xy[7][3]);
-        cxt.fillRect(...xy[7][4]);
-        cxt.fillStyle = '#5b67a5';
-        cxt.fillRect(...xy[1][2]);
-        cxt.fillRect(...xy[7][2]);
-        cxt.fillStyle = '#5ba55b';
-        cxt.fillRect(...xy[5][3]);
-        cxt.fillStyle = '#a5745b';
-        cxt.fillRect(...xy[1][0]);
-        cxt.fillRect(...xy[7][0]);
+        ctx.fillStyle = '#FFF';
+        ctx.fillRect(0, 56, 40, 40);
+        ctx.fillRect(...xy[2][3]);
+        ctx.fillRect(...xy[2][4]);
+        ctx.fillRect(...xy[4][3]);
+        ctx.fillRect(...xy[4][4]);
+        ctx.fillRect(...xy[6][3]);
+        ctx.fillRect(...xy[9][3]);
+        ctx.fillStyle = '#745ba5';
+        ctx.fillRect(...xy[0][3]);
+        ctx.fillRect(...xy[3][3]);
+        ctx.fillRect(...xy[3][4]);
+        ctx.fillRect(...xy[8][3]);
+        ctx.fillRect(...xy[8][4]);
+        ctx.fillStyle = '#5ba58c';
+        ctx.fillRect(...xy[0][2]);
+        ctx.fillStyle = '#5b80a5';
+        ctx.fillRect(...xy[1][1]);
+        ctx.fillRect(...xy[1][3]);
+        ctx.fillRect(...xy[1][4]);
+        ctx.fillRect(...xy[7][1]);
+        ctx.fillRect(...xy[7][3]);
+        ctx.fillRect(...xy[7][4]);
+        ctx.fillStyle = '#5b67a5';
+        ctx.fillRect(...xy[1][2]);
+        ctx.fillRect(...xy[7][2]);
+        ctx.fillStyle = '#5ba55b';
+        ctx.fillRect(...xy[5][3]);
+        ctx.fillStyle = '#a5745b';
+        ctx.fillRect(...xy[1][0]);
+        ctx.fillRect(...xy[7][0]);
     }
     componentDidMount() {
         const { toyBlocks, handleClick } = this.props;

@@ -35,7 +35,7 @@ const toolbox = (
                 </value>
             </block>
         </category>
-        <category id="catMath" colour="230" name="公式">
+        <category id="catMath" colour="230" name="数学">
             <block type="math_number"></block>
             <block type="math_arithmetic">
                 <value name="A">
@@ -46,13 +46,6 @@ const toolbox = (
                 <value name="B">
                     <shadow type="math_number">
                         <field name="NUM">1</field>
-                    </shadow>
-                </value>
-            </block>
-            <block type="math_single">
-                <value name="NUM">
-                    <shadow type="math_number">
-                        <field name="NUM">9</field>
                     </shadow>
                 </value>
             </block>
@@ -76,6 +69,9 @@ const toolbox = (
         <category id="catText" colour="160" name="文本">
             <block type="text"></block>
         </category>
+        <sep></sep>
+        <category id="catVariables" colour="330" custom="VARIABLE" name="变量"></category>
+        <sep></sep>
         <category id="catInput" colour="20" name="输入">
             <block type="input_temperature"></block>
             <block type="input_distance"></block>
@@ -94,8 +90,6 @@ const toolbox = (
             </block>
             <block type="output_blink"></block>
         </category>
-        <sep></sep>
-        <category id="catVariables" colour="330" custom="VARIABLE" name="变量"></category>
     </xml>`
 );
 
