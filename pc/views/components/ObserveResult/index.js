@@ -15,13 +15,13 @@ class ObserveResult extends Component {
         //     ctx.drawImage(img, 0, 0, 32, 32);
         // }
         const { svg, robot } = this.refs;
-        document.getElementById('robot').style.x = '100px';
-        document.getElementById('robot').style.y = '100px';
+        document.getElementById('robot').style.x = '368px';
+        document.getElementById('robot').style.y = '169px';
     }
     render() {
         return (
             <div className={styles.content}>
-                <svg ref='svg'>
+                <svg ref='svg' className={styles.svg}>
                     <image href={robot} id='robot'></image>
                 </svg>
             </div>

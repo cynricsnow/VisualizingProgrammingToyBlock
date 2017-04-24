@@ -12,14 +12,14 @@
     min-width: 596px;
 }*/
 
-svg {
+.svg {
     height: 100%;
     width: 100%;
     min-width: 596px;
-    /*background-color: white;*/
+    background-color: white;
 }
 
-svg image {
-    height: 80px;
-    width: 80px;
+.svg image {
+    height: 60px;
+    width: 60px;
 }

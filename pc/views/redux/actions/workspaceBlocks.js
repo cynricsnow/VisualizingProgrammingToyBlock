@@ -1,106 +1,80 @@
 const workspaceBlocks = (
-    `<xml id="workspaceBlocks" style="display:none">
-      <block type="controls_for" x="60" y="60">
-        <field name="VAR">i</field>
-        <value name="FROM">
-          <shadow type="math_number">
-            <field name="NUM">1</field>
-          </shadow>
-        </value>
-        <value name="TO">
-          <shadow type="math_number">
-            <field name="NUM">10</field>
-          </shadow>
-        </value>
-        <value name="BY">
-          <shadow type="math_number">
-            <field name="NUM">1</field>
-          </shadow>
-        </value>
-        <statement name="DO">
-          <block type="controls_if">
-            <value name="IF0">
-              <block type="logic_compare">
-                <field name="OP">EQ</field>
-                <value name="A">
-                  <block type="variables_get">
-                    <field name="VAR">i</field>
-                  </block>
-                </value>
-                <value name="B">
-                  <block type="math_number">
-                    <field name="NUM">1</field>
-                  </block>
-                </value>
-              </block>
+    `<xml>
+        <block type="output_speak" x="20" y="20">
+            <value name="WORDS">
+                <shadow type="text">
+                    <field name="TEXT">你好</field>
+                </shadow>
             </value>
-            <statement name="DO0">
-              <block type="text_output">
-                <value name="TEXT">
-                  <block type="text">
-                    <field name="TEXT">hello</field>
-                  </block>
-                </value>
-              </block>
-            </statement>
             <next>
-              <block type="controls_if">
-                <value name="IF0">
-                  <block type="logic_compare">
-                    <field name="OP">LT</field>
-                    <value name="A">
-                      <block type="variables_get">
-                        <field name="VAR">i</field>
-                      </block>
-                    </value>
-                    <value name="B">
-                      <block type="math_number">
-                        <field name="NUM">10</field>
-                      </block>
-                    </value>
-                  </block>
-                </value>
-                <statement name="DO0">
-                  <block type="text_output">
-                    <value name="TEXT">
-                      <block type="colour_random"></block>
-                    </value>
-                  </block>
-                </statement>
-                <next>
-                  <block type="controls_if">
+                <block type="controls_if">
+                    <mutation else="1"></mutation>
                     <value name="IF0">
-                      <block type="logic_compare">
-                        <field name="OP">EQ</field>
-                        <value name="A">
-                          <block type="variables_get">
-                            <field name="VAR">i</field>
-                          </block>
-                        </value>
-                        <value name="B">
-                          <block type="math_number">
-                            <field name="NUM">10</field>
-                          </block>
-                        </value>
-                      </block>
+                        <block type="logic_compare">
+                            <field name="OP">GT</field>
+                            <value name="A">
+                                <block type="input_temperature"></block>
+                            </value>
+                            <value name="B">
+                                <block type="math_number">
+                                    <field name="NUM">30</field>
+                                </block>
+                            </value>
+                        </block>
                     </value>
                     <statement name="DO0">
-                      <block type="text_output">
-                        <value name="TEXT">
-                          <block type="text">
-                            <field name="TEXT">world</field>
-                          </block>
-                        </value>
-                      </block>
+                        <block type="output_blink">
+                            <field name="COLOR">#ff0000</field>
+                        </block>
                     </statement>
-                  </block>
-                </next>
-              </block>
+                    <statement name="ELSE">
+                        <block type="output_blink">
+                            <field name="COLOR">#33ff33</field>
+                        </block>
+                    </statement>
+                    <next>
+                        <block type="controls_repeat_ext">
+                            <value name="TIMES">
+                                <shadow type="math_number">
+                                    <field name="NUM">5</field>
+                                </shadow>
+                            </value>
+                            <statement name="DO">
+                                <block type="controls_if">
+                                    <mutation else="1"></mutation>
+                                    <value name="IF0">
+                                        <block type="logic_compare">
+                                            <field name="OP">GT</field>
+                                            <value name="A">
+                                                <block type="input_distance">
+                                                </block>
+                                            </value>
+                                            <value name="B">
+                                                <block type="math_number">
+                                                    <field name="NUM">50</field>
+                                                </block>
+                                            </value>
+                                        </block>
+                                    </value>
+                                    <statement name="DO0">
+                                        <block type="output_forward">
+                                            <field name="DISTANCE">50</field>
+                                        </block>
+                                    </statement>
+                                    <statement name="ELSE">
+                                        <block type="output_clockwiseroate">
+                                            <field name="ANGLE">90</field>
+                                        </block>
+                                    </statement>
+                                </block>
+                            </statement>
+                        </block>
+                    </next>
+                </block>
             </next>
-          </block>
-        </statement>
-      </block>
+        </block>
     </xml>`
 );
+
 
 export default workspaceBlocks;

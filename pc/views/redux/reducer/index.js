@@ -5,7 +5,10 @@ import loadXMLString from '../../common/loadXMLString';
 const INITIAL_STATE = {
     dock: null,
     logic: null,
-    observe: null,
+    observe: {
+        temperatures: [],
+        distances: []
+    },
     workspace: null
 }
 
@@ -15,7 +18,11 @@ const reducer = (state = INITIAL_STATE, action = {}) => {
             return {
                 ...state,
                 dock: action.data,
-                logic: loadXMLString(action.data).childNodes[0]
+                logic: loadXMLString(action.data).childNodes[0],
+                observe: {
+                    temperatures: [1],
+                    distances: [1]
+                }
             };
         case types.LOGIC_INITIAL:
             return {
