@@ -5,7 +5,8 @@ import loadXMLString from '../../common/loadXMLString';
 const INITIAL_STATE = {
     dock: null,
     logic: null,
-    observe: null
+    observe: null,
+    workspace: null
 }
 
 const reducer = (state = INITIAL_STATE, action = {}) => {
@@ -16,6 +17,11 @@ const reducer = (state = INITIAL_STATE, action = {}) => {
                 dock: action.data,
                 logic: loadXMLString(action.data).childNodes[0]
             };
+        case types.LOGIC_INITIAL:
+            return {
+                ...state,
+                workspace: action.workspace
+            }
         case types.LOGIC_MODIFY:
             return {
                 ...state,

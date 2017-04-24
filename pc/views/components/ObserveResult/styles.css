@@ -1,0 +1,25 @@
+.content {
+    height: 50%;
+    min-height: 300px;
+    min-width: 596px;
+    padding: 8px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.37), 0 0 1px rgba(0, 0, 0, 0.37);
+    border-radius: 4px;
+}
+
+/*canvas {
+    width: 100%;
+    min-width: 596px;
+}*/
+
+svg {
+    height: 100%;
+    width: 100%;
+    min-width: 596px;
+    /*background-color: white;*/
+}
+
+svg image {
+    height: 80px;
+    width: 80px;
+}

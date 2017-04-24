@@ -23,10 +23,7 @@ class Nav extends Component {
                     <div className='collapse navbar-collapse' id='navbar-menu'>
                         <ul className='nav navbar-nav navbar-right'>
                             <li className={this.liIsActive('/')}>
-                                <Link to='/'>对接积木</Link>
-                            </li>
-                            <li className={this.liIsActive('/logic')}>
-                                <Link to='/logic'>独立模式</Link>
+                                <Link to='/'>独立模式</Link>
                             </li>
                             <li className={this.liIsActive('/observe')}>
                                 <Link to='/observe'>观察模式</Link>
