@@ -15,7 +15,8 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
     "morgan": "^1.8.1",
-    "serve-favicon": "^2.4.2"
+    "serve-favicon": "^2.4.2",
+    "xmldom": "^0.1.27"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.7",
