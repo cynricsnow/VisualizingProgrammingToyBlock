@@ -104,7 +104,7 @@ Blockly.JavaScript.output_back = function (block) {
   return code;
 };
 
-Blockly.Blocks.output_clockwiseroate = {
+Blockly.Blocks.output_clockwiserotate = {
     init() {
         this.jsonInit({
             message0: Blockly.Msg.OUTPUT_CLOCKWISEROTATE_TITLE,
@@ -138,7 +138,7 @@ Blockly.Blocks.output_clockwiseroate = {
     }
 }
 
-Blockly.JavaScript.output_clockwiseroate = function (block) {
+Blockly.JavaScript.output_clockwiserotate = function (block) {
   const angle = block.getFieldValue('ANGLE') || 0;
   const code = 'outputAppendText(' + '"顺时针旋转 \u21BB " + ' + angle + ' + " 度\\n");\n';
   return code;

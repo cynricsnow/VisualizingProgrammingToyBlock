@@ -79,7 +79,7 @@ const toolbox = (
         <category id="catOutput" colour="260" name="输出">
             <block type="output_forward"></block>
             <block type="output_back"></block>
-            <block type="output_clockwiseroate"></block>
+            <block type="output_clockwiserotate"></block>
             <block type="output_anticlockwiseroate"></block>
             <block type="output_speak">
                 <value name="WORDS">

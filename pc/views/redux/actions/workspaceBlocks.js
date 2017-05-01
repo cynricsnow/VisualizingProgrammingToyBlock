@@ -62,7 +62,7 @@ const workspaceBlocks = (
                                         </block>
                                     </statement>
                                     <statement name="ELSE">
-                                        <block type="output_clockwiseroate">
+                                        <block type="output_clockwiserotate">
                                             <field name="ANGLE">90</field>
                                         </block>
                                     </statement>
