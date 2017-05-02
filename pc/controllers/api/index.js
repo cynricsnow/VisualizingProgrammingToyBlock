@@ -15,9 +15,45 @@ const IF = 8;
 const ELSE = 9;
 const SYMBOL = 10;
 
-const STATEMENT = 100;
+const TEXT = 11;
+const COLOR = 12;
 
 const fake = [{
+    type: OUTPUT,
+    value: 2
+}, {
+    type: TEXT,
+    value: '你好'
+}, {
+    type: IF
+}, {
+    type: INPUT,
+    value: 0
+}, {
+    type: SYMBOL,
+    value: 4
+}, {
+    type: NUMBER,
+    value: 30
+}, {
+    type: START
+}, {
+    type: OUTPUT,
+    value: 3
+}, {
+    type: COLOR,
+    value: '#ff0000'
+}, {
+    type: ELSE
+}, {
+    type: OUTPUT,
+    value: 3
+}, {
+    type: COLOR,
+    value: '#33ff33'
+}, {
+    type: END
+}, {
     type: FOR,
     value: 5
 }, {
@@ -29,7 +65,7 @@ const fake = [{
     value: 1
 }, {
     type: SYMBOL,
-    value: 1
+    value: 4
 }, {
     type: NUMBER,
     value: 50
@@ -68,13 +104,22 @@ const OUTPUT_TYPES = [
     'output_blink'
 ];
 const SYMBOL_TYPES = [
+    '==',
+    '!=',
+    '<',
+    '<=',
+    '>',
+    '>='
+];
+const SYMBOL_TYPES_TEXT = [
     'EQ',
     'NEQ',
     'LT',
     'LTE',
     'GT',
     'GTE'
-]
+];
+
 
 const dataToBlocks = (data) => {
     const blocks = [];
@@ -159,6 +204,14 @@ const dataToTree = (data) => {
                     root,
                     index: 2
                 }
+            case TEXT:
+                root.type = TEXT;
+                root.value = data[i].value;
+                return root;
+            case COLOR:
+                root.type = COLOR;
+                root.value = data[i].value;
+                return root;
             default:
                 break;
         }
@@ -193,6 +246,7 @@ const angleNormalize = (angle) => {
 const TreeNodeToXMLCreator = (doc) => (node) => {
     const TreeNodeToXML = TreeNodeToXMLCreator(doc);
     let block;
+    let type;
     let child;
     let value;
     let field;
@@ -208,11 +262,11 @@ const TreeNodeToXMLCreator = (doc) => (node) => {
         case OUTPUT:
             block = doc.createElement('block');
             child = TreeNodeToXML(node.child);
-            value = node.value + 2;
+            type = node.value + 2;
             switch (node.value) {
                 case 0:
                     if (child < 0) {
-                        value -= 2;
+                        type -= 2;
                     }
                     field = doc.createElement('field');
                     field.setAttribute('name', 'DISTANCE');
@@ -222,7 +276,7 @@ const TreeNodeToXMLCreator = (doc) => (node) => {
                     break;
                 case 1:
                     if (child < 0) {
-                        value -= 2;
+                        type -= 2;
                     }
                     field = doc.createElement('field');
                     field.setAttribute('name', 'ANGLE');
@@ -231,18 +285,21 @@ const TreeNodeToXMLCreator = (doc) => (node) => {
                     block.appendChild(field);
                     break;
                 case 2:
-                    block.appendChild(child);
+                    value = doc.createElement('value');
+                    value.setAttribute('name', 'WORDS');
+                    value.appendChild(child);
+                    block.appendChild(value);
                     break;
                 case 3:
                     field = doc.createElement('field');
                     field.setAttribute('name', 'COLOR');
-                    text = doc.createTextNode(chlid);
+                    text = doc.createTextNode(child);
                     field.appendChild(text);
                     block.appendChild(field);
                 default:
                     break;
             }
-            block.setAttribute('type', OUTPUT_TYPES[value]);
+            block.setAttribute('type', OUTPUT_TYPES[type]);
             if (node.next.type) {
                 next = doc.createElement('next');
                 child = TreeNodeToXML(node.next);
@@ -251,6 +308,7 @@ const TreeNodeToXMLCreator = (doc) => (node) => {
             }
             return block;
         case NUMBER:
+        case COLOR:
             return node.value;
         case WHILE:
             break;
@@ -316,9 +374,9 @@ const TreeNodeToXMLCreator = (doc) => (node) => {
         case SYMBOL:
             block = doc.createElement('block');
             block.setAttribute('type', 'logic_compare');
-            field = doc.createElement('name');
+            field = doc.createElement('field');
             field.setAttribute('name', 'OP');
-            text = doc.createTextNode(SYMBOL_TYPES[node.value]);
+            text = doc.createTextNode(SYMBOL_TYPES_TEXT[node.value]);
             field.appendChild(text);
             block.appendChild(field);
             value = doc.createElement('value');
@@ -350,21 +408,25 @@ const TreeNodeToXMLCreator = (doc) => (node) => {
             value.appendChild(child);
             block.appendChild(value);
             return block;
+        case TEXT:
+            block = doc.createElement('block');
+            block.setAttribute('type', 'text');
+            field = doc.createElement('field');
+            field.setAttribute('name', 'TEXT');
+            text = doc.createTextNode(node.value);
+            field.appendChild(text);
+            block.appendChild(field);
+            return block;
         default:
             break;
     }
 }
 
-const dataToXMLDom = (data) => {
+const treeToXMLDom = (root) => {
     let doc = new DOMParser().parseFromString(' ', 'text/xml');
     let xml = doc.createElement('xml');
-
-    const ripeData = preProcesser(fake);
-    const root = dataToTree(ripeData);
-    console.log(root);
-
     let block = TreeNodeToXMLCreator(doc)(root);
-    block.setAttribute('x', 20);
+    block.setAttribute('x', 40);
     block.setAttribute('y', 20);
     xml.appendChild(block);
     doc.appendChild(xml);
@@ -373,8 +435,80 @@ const dataToXMLDom = (data) => {
     return str;
 }
 
+const TreeNodeToCode = (node, indent = 0) => {
+    let space = Array(indent).fill('    ').join('');
+    let code = space.concat();
+    let child;
+    let type;
+    let condition;
+    let statement;
+    switch (node.type) {
+        case INPUT:
+            code += INPUT_TYPES[node.value];
+            code += '()';
+            break;
+        case OUTPUT:
+            child = TreeNodeToCode(node.child);
+            type = node.value + 2;
+            if (node.value < 2 && child < 0) {
+                type -= 2;
+            }
+            code += OUTPUT_TYPES[type] + `(${child});\n`;
+            if (node.next.type) {
+                code += TreeNodeToCode(node.next, indent);
+            }
+            break;
+        case NUMBER:
+            code += node.value;
+            break;
+        case WHILE:
+            break;
+        case FOR:
+            child = TreeNodeToCode(node.child, indent + 1);
+            code += `for (let i = 0; i < ${node.value}; i++) {\n${child}${space}}\n`;
+            if (node.next.type) {
+                code += TreeNodeToCode(node.next, indent);
+            }
+            break;
+        case IF:
+            condition = TreeNodeToCode(node.condition);
+            statement = TreeNodeToCode(node.child, indent + 1);
+            code += `if (${condition}) {\n${statement}${space}}\n`;
+            if (typeof node.elseStatement === 'object') {
+                statement = TreeNodeToCode(node.elseStatement, indent + 1);
+                code += `${space}else {\n${statement}${space}}\n`
+            }
+            if (node.next.type) {
+                code += TreeNodeToCode(node.next, indent);
+            }
+            break;
+        case SYMBOL:
+            child = TreeNodeToCode(node.child);
+            code += child;
+            code += ' ';
+            code += SYMBOL_TYPES[node.value];
+            code += ' ';
+            child = TreeNodeToCode(node.child.next);
+            code += child;
+            break;
+        case TEXT:
+            code += `"${node.value}"`;
+            break;
+        case COLOR:
+            code += `"${node.value}"`;
+            break;
+        default:
+            break;
+    }
+    return code;
+}
+
 router.post('/dock', (req, res) => {
-    const XMLDom = dataToXMLDom(fake);
+    const ripeData = preProcesser(fake);
+    const root = dataToTree(ripeData);
+    const XMLDom = treeToXMLDom(root);
+    const code = TreeNodeToCode(root);
+    console.log(code);
     res.status(200).json(XMLDom);
 })
 
