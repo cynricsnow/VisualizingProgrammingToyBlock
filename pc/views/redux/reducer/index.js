@@ -7,7 +7,8 @@ const INITIAL_STATE = {
     logic: null,
     observe: {
         temperatures: [],
-        distances: []
+        distances: [],
+        code: ''
     },
     workspace: null
 }
@@ -18,10 +19,11 @@ const reducer = (state = INITIAL_STATE, action = {}) => {
             return {
                 ...state,
                 dock: action.data,
-                logic: loadXMLString(action.data).childNodes[0],
+                logic: loadXMLString(action.XMLDom).childNodes[0],
                 observe: {
                     temperatures: [1],
-                    distances: [1]
+                    distances: [1],
+                    code: action.code
                 }
             };
         case types.LOGIC_INITIAL:

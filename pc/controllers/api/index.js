@@ -509,7 +509,10 @@ router.post('/dock', (req, res) => {
     const XMLDom = treeToXMLDom(root);
     const code = TreeNodeToCode(root);
     console.log(code);
-    res.status(200).json(XMLDom);
+    res.status(200).json({
+        XMLDom,
+        code
+    });
 })
 
 module.exports = router;

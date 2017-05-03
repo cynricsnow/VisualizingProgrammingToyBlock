@@ -5,19 +5,16 @@ export const DOCK = 'VISUAL/DOCK';
 export const LOGIC_INITIAL = 'VISUAL/LOGIC_INITIAL';
 export const LOGIC_MODIFY = 'VISUAL/LOGIC_MODIFY';
 
-// export const dock = () => ({
-//     type: DOCK,
-//     data
-// });
 export const dock = () => {
     const xhr = new XMLHttpRequest();
     xhr.open('post', '/api/dock', false);
     xhr.send('fake');
-    let str = xhr.responseText.slice(1, -1);
-    str = str.replace(/\\\"/g, '"');
+    const res = JSON.parse(xhr.response);
+    const { XMLDom, code } = res;
     return {
         type: DOCK,
-        data: str
+        XMLDom,
+        code
     }
 };
 export const logic_initial = (workspace) => ({
