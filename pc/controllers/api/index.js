@@ -444,7 +444,7 @@ const TreeNodeToCode = (node, indent = 0) => {
     let statement;
     switch (node.type) {
         case INPUT:
-            code += INPUT_TYPES[node.value];
+            code += 'this.' + INPUT_TYPES[node.value];
             code += '()';
             break;
         case OUTPUT:
@@ -453,7 +453,7 @@ const TreeNodeToCode = (node, indent = 0) => {
             if (node.value < 2 && child < 0) {
                 type -= 2;
             }
-            code += OUTPUT_TYPES[type] + `(${child});\n`;
+            code += 'this.' + OUTPUT_TYPES[type] + `(${child});\n`;
             if (node.next.type) {
                 code += TreeNodeToCode(node.next, indent);
             }
@@ -513,6 +513,16 @@ router.post('/dock', (req, res) => {
         XMLDom,
         code
     });
-})
+});
+
+router.get('/input_distance', (req, res) => {
+    const distance = (Math.random() * 100).toFixed(2);
+    res.status(200).json(distance);
+});
+
+router.get('/input_temperature', (req, res) => {
+    const temperature = (Math.random() * 80 - 30).toFixed(1);
+    res.status(200).json(temperature);
+});
 
 module.exports = router;
