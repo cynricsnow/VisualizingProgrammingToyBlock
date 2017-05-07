@@ -12,13 +12,20 @@ import styles from './styles.css';
     }),
     dispatch => ({
         handleClick(e) {
-            this.draw();
             dispatch(dock());
         }
     })
 )
 class DockContent extends Component {
+    shouldComponentUpdate(nextProps, nextState) {
+        const { toyBlocks } = nextProps;
+        if (toyBlocks) {
+            this.draw(toyBlocks);
+        }
+        return false;
+    }
     draw(blocks) {
+        console.log(blocks);
         const { canvas } = this.refs;
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);

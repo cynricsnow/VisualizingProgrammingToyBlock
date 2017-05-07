@@ -10,9 +10,10 @@ export const dock = () => {
     xhr.open('post', '/api/dock', false);
     xhr.send('fake');
     const res = JSON.parse(xhr.response);
-    const { XMLDom, code } = res;
+    const { blocks, XMLDom, code } = res;
     return {
         type: DOCK,
+        blocks,
         XMLDom,
         code
     }

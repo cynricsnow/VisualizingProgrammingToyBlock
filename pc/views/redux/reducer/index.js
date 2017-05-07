@@ -18,7 +18,7 @@ const reducer = (state = INITIAL_STATE, action = {}) => {
         case types.DOCK:
             return {
                 ...state,
-                dock: action.data,
+                dock: action.blocks,
                 logic: loadXMLString(action.XMLDom).childNodes[0],
                 observe: {
                     temperatures: [1],
