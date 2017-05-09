@@ -20,6 +20,10 @@ const INPUT_TYPES = [
     'input_temperature',
     'input_distance'
 ];
+const INPUT_TYPES_SYMBOL = [
+    '\u2744',
+    '\u21AD'
+]
 const OUTPUT_TYPES = [
     'output_back',
     'output_anticlockwiserotate',
@@ -27,6 +31,12 @@ const OUTPUT_TYPES = [
     'output_clockwiserotate',
     'output_speak',
     'output_blink'
+];
+const OUTPUT_TYPES_SYMBOL = [
+    '\u2191',
+    '\u21BB',
+    '\u266C',
+    '\u2721'
 ];
 const SYMBOL_TYPES = [
     '==',
@@ -68,6 +78,7 @@ const dataToBlocks = (data) => {
                 break;
             case INPUT:
                 block.type = INPUT;
+                block.symbol = INPUT_TYPES_SYMBOL[data[i].value];
                 block.x = x;
                 block.y = y;
                 y--;
@@ -77,12 +88,14 @@ const dataToBlocks = (data) => {
                 break;
             case OUTPUT:
                 block.type = OUTPUT;
+                block.symbol = OUTPUT_TYPES_SYMBOL[data[i].value];
                 block.x = x;
                 block.y = 0;
                 y++;
                 break;
             case NUMBER:
                 block.type = NUMBER;
+                block.value = data[i].value;
                 block.x = x;
                 block.y = y;
                 y--;
@@ -94,6 +107,7 @@ const dataToBlocks = (data) => {
                 break;
             case FOR:
                 block.type = FOR;
+                block.value = data[i].value;
                 block.x = x;
                 block.y = 0;
                 x++;
@@ -112,12 +126,14 @@ const dataToBlocks = (data) => {
                 break;
             case SYMBOL:
                 block.type = SYMBOL;
+                block.symbol = SYMBOL_TYPES[data[i].value];
                 block.x = x;
                 block.y = y;
                 y--;
                 break;
             case TEXT:
                 block.type = TEXT;
+                block.value = data[i].value;
                 block.x = x;
                 block.y = y;
                 x++;
@@ -125,6 +141,7 @@ const dataToBlocks = (data) => {
                 break;
             case COLOR:
                 block.type = COLOR;
+                block.value = data[i].value;
                 block.x = x;
                 block.y = y;
                 x++;

@@ -6,6 +6,36 @@ import { dock } from '../../redux/actions';
 import cube from './cube.png';
 import styles from './styles.css';
 
+const BLOCK_COLORS = [
+    '#FFFFFF',
+    '#FFFFFF',
+    '#A5745B',
+    '#745BA5',
+    '#5B67A5',
+    '#5BA55B',
+    '#5BA55B',
+    '#5B80A5',
+    '#5B80A5',
+    '#5B80A5',
+    '#5BA58C',
+    '#9fA55B'
+];
+
+const BLOCK_TEXTS = [
+    'START',
+    'END',
+    'INPUT',
+    'OUTPUT',
+    'NUMBER',
+    'WHILE',
+    'FOR',
+    'IF',
+    'ELSE',
+    'SYMBOL',
+    'TEXT',
+    'COLOR'
+]
+
 @connect(
     state => ({
         toyBlocks: state.dock
@@ -25,48 +55,76 @@ class DockContent extends Component {
         return false;
     }
     draw(blocks) {
-        console.log(blocks);
         const { canvas } = this.refs;
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        let xy = [];
-        for (let i = 0; i < 10; i++) {
-            xy[i] = [];
-            for (let j = 0; j < 10; j++) {
-                xy[i][j] = [42 + 22 * i, 22 * j, 20, 20];
+        if (blocks) {
+            const times = blocks[blocks.length - 1].x + 2;
+            const length = Math.floor((canvas.width - 40) / times) - 2;
+            for (let i = 0; i < blocks.length; i++) {
+                let { type, x, y, value, symbol } = blocks[i];
+                ctx.fillStyle = BLOCK_COLORS[type - 1];
+                let pointX = (length + 2) * (x + 2) - 2;
+                let pointY = (length + 2) * (3 - y) + 10;
+                let text;
+                let width;
+                ctx.fillRect(pointX, pointY, length, length);
+                ctx.fillStyle = 'black';
+                switch (blocks[i].type) {
+                    case 1:
+                    case 2:
+                    case 6:
+                    case 8:
+                    case 9:
+                        ctx.font = "12px sans-serif";
+                        text = BLOCK_TEXTS[type - 1];
+                        width = ctx.measureText(text).width;
+                        ctx.fillText(text, pointX + (length - width) / 2, pointY + length / 2 + 6);
+                        break;
+                    case 3:
+                    case 4:
+                        ctx.font = length - 6 + "px sans-serif";
+                        text = symbol;
+                        width = ctx.measureText(text).width;
+                        ctx.fillText(text, pointX + (length - width) / 2, pointY + length / 4 * 3 + 2);
+                        break;
+                    case 5:
+                        ctx.font = "14px sans-serif";
+                        text = value;
+                        width = ctx.measureText(text).width;
+                        ctx.fillText(text, pointX + (length - width) / 2, pointY + length / 2 + 7);
+                        break;
+                    case 7:
+                        ctx.font = "12px sans-serif";
+                        text = BLOCK_TEXTS[type - 1] + '-' + value;
+                        width = ctx.measureText(text).width;
+                        ctx.fillText(text, pointX + (length - width) / 2, pointY + length / 2 + 6);
+                        break;
+                    case 10:
+                        ctx.font = length - 6 + "px sans-serif";;
+                        text = symbol;
+                        width = ctx.measureText(text).width;
+                        ctx.fillText(text, pointX + (length - width) / 2, pointY + length / 4 * 3);
+                        break;
+                    case 11:
+                        ctx.font = "14px sans-serif";
+                        text = '......';
+                        width = ctx.measureText(text).width;
+                        ctx.fillText(text, pointX + (length - width) / 2, pointY + length / 2 + 5);
+                        break;
+                    case 12:
+                        width = length - 8;
+                        ctx.fillStyle = blocks[i].value;
+                        ctx.fillRect(pointX + 4, pointY + 4, width, width);
+                        break;
+                    default:
+                        break;
+                }
             }
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, (length + 2) * 3 - length / 2 + 10, length * 2, length * 2);
+
         }
-        ctx.fillStyle = '#FFF';
-        ctx.fillRect(0, 56, 40, 40);
-        ctx.fillRect(...xy[2][3]);
-        ctx.fillRect(...xy[2][4]);
-        ctx.fillRect(...xy[4][3]);
-        ctx.fillRect(...xy[4][4]);
-        ctx.fillRect(...xy[6][3]);
-        ctx.fillRect(...xy[9][3]);
-        ctx.fillStyle = '#745ba5';
-        ctx.fillRect(...xy[0][3]);
-        ctx.fillRect(...xy[3][3]);
-        ctx.fillRect(...xy[3][4]);
-        ctx.fillRect(...xy[8][3]);
-        ctx.fillRect(...xy[8][4]);
-        ctx.fillStyle = '#5ba58c';
-        ctx.fillRect(...xy[0][2]);
-        ctx.fillStyle = '#5b80a5';
-        ctx.fillRect(...xy[1][1]);
-        ctx.fillRect(...xy[1][3]);
-        ctx.fillRect(...xy[1][4]);
-        ctx.fillRect(...xy[7][1]);
-        ctx.fillRect(...xy[7][3]);
-        ctx.fillRect(...xy[7][4]);
-        ctx.fillStyle = '#5b67a5';
-        ctx.fillRect(...xy[1][2]);
-        ctx.fillRect(...xy[7][2]);
-        ctx.fillStyle = '#5ba55b';
-        ctx.fillRect(...xy[5][3]);
-        ctx.fillStyle = '#a5745b';
-        ctx.fillRect(...xy[1][0]);
-        ctx.fillRect(...xy[7][0]);
     }
     componentDidMount() {
         const { toyBlocks, handleClick } = this.props;
@@ -79,7 +137,7 @@ class DockContent extends Component {
         return (
             <div className={styles.content}>
                 <div className={styles.result}>
-                    <canvas ref='canvas'></canvas>
+                    <canvas ref='canvas' width={800} height={300}></canvas>
                 </div>
                 <div className={styles.controller}>
                     <button type='button' className='btn' onClick={handleClick.bind(this)}><img src={cube}/></button>

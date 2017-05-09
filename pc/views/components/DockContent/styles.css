@@ -17,8 +17,8 @@
 .result canvas {
     /*height: 100%;*/
     /*height: calc(100% - 5px);*/
-    width: 100%;
-    min-width: 596px;
+    /*width: 100%;*/
+    /*min-width: 596px;*/
 }
 
 .controller {
