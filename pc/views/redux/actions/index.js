@@ -1,6 +1,4 @@
 'use strict'
-import data from './workspaceBlocks';
-
 export const DOCK = 'VISUAL/DOCK';
 export const LOGIC_INITIAL = 'VISUAL/LOGIC_INITIAL';
 export const LOGIC_MODIFY = 'VISUAL/LOGIC_MODIFY';

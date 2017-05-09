@@ -97,8 +97,6 @@ router.post('/dock', (req, res) => {
     const root = dataToTree(ripeData);
     const XMLDom = treeToXMLDom(root);
     const code = TreeNodeToCode(root);
-    console.log(blocks);
-    console.log(code);
     res.status(200).json({
         blocks,
         XMLDom,

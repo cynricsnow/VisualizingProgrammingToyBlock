@@ -461,7 +461,6 @@ const treeToXMLDom = (root) => {
     xml.appendChild(block);
     doc.appendChild(xml);
     const str = new XMLSerializer().serializeToString(doc);
-    console.log(str);
     return str;
 }
 
