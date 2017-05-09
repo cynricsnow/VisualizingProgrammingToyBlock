@@ -1,44 +1,12 @@
 'use strict'
-import * as types from '../actions';
-import loadXMLString from '../../common/loadXMLString';
+import { combineReducers } from 'redux';
 
-const INITIAL_STATE = {
-    dock: null,
-    logic: null,
-    observe: {
-        temperatures: [],
-        distances: [],
-        code: ''
-    },
-    workspace: null
-}
+import dock from './dock';
+import logic from './logic';
+import observe from './observe';
 
-const reducer = (state = INITIAL_STATE, action = {}) => {
-    switch (action.type) {
-        case types.DOCK:
-            return {
-                ...state,
-                dock: action.blocks,
-                logic: loadXMLString(action.XMLDom).childNodes[0],
-                observe: {
-                    temperatures: [1],
-                    distances: [1],
-                    code: action.code
-                }
-            };
-        case types.LOGIC_INITIAL:
-            return {
-                ...state,
-                workspace: action.workspace
-            }
-        case types.LOGIC_MODIFY:
-            return {
-                ...state,
-                logic: action.data
-            }
-        default:
-            return state;
-    }
-}
-
-export default reducer;
+export default combineReducers({
+    dock,
+    logic,
+    observe
+})

@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { logic_modify } from '../../redux/actions';
 import styles from './styles.css';
 
 let outputAppendText = null;
@@ -14,7 +13,7 @@ let parse = false;
 
 @connect(
     state => ({
-        workspace: state.workspace
+        workspace: state.logic.workspace
     })
 )
 class LogicResult extends Component {

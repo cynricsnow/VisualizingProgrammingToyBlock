@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { dock } from '../../redux/actions';
+import { dock } from '../../redux/actions/dock';
 import cube from './cube.png';
 import styles from './styles.css';
 

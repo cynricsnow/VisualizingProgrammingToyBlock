@@ -3,15 +3,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import loadXMLString from '../../common/loadXMLString';
-import { logic_initial, logic_modify } from '../../redux/actions';
+import { logic_initial, logic_modify } from '../../redux/actions/logic';
 import './custom';
 import toolbox from './toolbox';
 import styles from './styles';
 
 @connect(
     state => ({
-        workspace: state.workspace,
-        workspaceBlocks: state.logic
+        workspace: state.logic.workspace,
+        workspaceBlocks: state.logic.XMLDom
     }),
     dispatch => ({
         init(workspace) {

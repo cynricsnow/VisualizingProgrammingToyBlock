@@ -1,7 +1,5 @@
 'use strict'
 export const DOCK = 'VISUAL/DOCK';
-export const LOGIC_INITIAL = 'VISUAL/LOGIC_INITIAL';
-export const LOGIC_MODIFY = 'VISUAL/LOGIC_MODIFY';
 
 export const dock = () => {
     const xhr = new XMLHttpRequest();
@@ -16,11 +14,3 @@ export const dock = () => {
         code
     }
 };
-export const logic_initial = (workspace) => ({
-    type: LOGIC_INITIAL,
-    workspace
-})
-export const logic_modify = (data) => ({
-    type: LOGIC_MODIFY,
-    data
-})
