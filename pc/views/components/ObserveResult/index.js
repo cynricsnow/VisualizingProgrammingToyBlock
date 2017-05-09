@@ -182,6 +182,15 @@ class ObserveResult extends Component {
         }, frames * 1000);
         frames += 3;
     }
+    reset() {
+        const robot = d3.select('#robot');
+        setTimeout(() => {
+            robot.transition()
+                .duration(1000)
+                .delay(2000)
+                .style('transform', 'translate(0, 0) rotate(0deg)');
+        }, frames * 1000);
+    }
     componentDidMount() {
         const svg = d3.select('svg');
         height = svg._groups[0][0].clientHeight;
@@ -207,8 +216,8 @@ class ObserveResult extends Component {
         const robot = d3.select('#robot');
         robot.style('transform', 'translate(0, 0) rotate(0deg)');
         eval(code);
-        eval('this.output_blink("#ff8c1a")')
-        eval('this.output_speak("???")')
+        eval('this.output_blink("#ff8c1a")');
+        this.reset();
     }
     render() {
         return (
