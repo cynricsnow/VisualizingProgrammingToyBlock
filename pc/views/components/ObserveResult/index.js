@@ -192,20 +192,14 @@ class ObserveResult extends Component {
         }, frames * 1000);
     }
     componentDidMount() {
-        const svg = d3.select('svg');
-        height = svg._groups[0][0].clientHeight;
-        width = svg._groups[0][0].clientWidth;
+        const { svg } = this.refs;
+        const info = svg.getBoundingClientRect();
+        height = info.height;
+        width = info.width;
         const robot = d3.select('#robot');
-        robot.style('x', width / 2 - 30 + 'px')
-            .style('y', height / 2 - 30 + 'px');
+        robot.attr('x', width / 2 - 30 + 'px')
+            .attr('y', height / 2 - 30 + 'px');
         robot.style('transform', 'translate(0, 0) rotate(0deg)');
-        svg.append('circle')
-            .attr('id', 'light')
-            .attr('cx', width / 2)
-            .attr('cy', height / 2)
-            .attr('r', 0)
-            .style('fill', 'rgba(0, 0, 0, 0)')
-            .style('stroke-width', 10);
     }
     runCode() {
         const { code } = this.props;
@@ -222,8 +216,9 @@ class ObserveResult extends Component {
     render() {
         return (
             <div className={styles.content}>
-                <svg className={styles.svg}>
-                    <image href={robot} id='robot' className={styles.robot} onClick={this.runCode.bind(this)}></image>
+                <svg ref="svg" className={styles.svg}>
+                    <image href={robot} id='robot' className={styles.robot} onClick={this.runCode.bind(this)} width='60' height='60'></image>
+                    <circle id="light" r="0" style={{fill: 'rgba(0, 0, 0, 0)', strokeWidth: 10}}></circle>
                 </svg>
                 <div id='tip' className={styles.tip}>
                     <p id='box' className={styles.box}></p>
