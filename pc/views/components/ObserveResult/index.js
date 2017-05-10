@@ -37,7 +37,9 @@ class ObserveResult extends Component {
         const robot = d3.select('#robot');
         setTimeout(() => {
             for (let i = 0; i < distance; i++) {
-                switch (direction % 4) {
+                let dir = direction % 4;
+                dir = dir > 0 ? dir : dir + 4;
+                switch (dir % 4) {
                     case 0:
                         y++;
                         break;
@@ -51,7 +53,7 @@ class ObserveResult extends Component {
                         x++;
                         break;
                     default:
-                    break;
+                        break;
                 }
                 robot.transition()
                     .duration(50)
@@ -69,7 +71,9 @@ class ObserveResult extends Component {
         const robot = d3.select('#robot');
         setTimeout(() => {
             for (let i = 0; i < distance; i++) {
-                switch (direction % 4) {
+                let dir = direction % 4;
+                dir = dir > 0 ? dir : dir + 4;
+                switch (dir) {
                     case 0:
                         y--;
                         break;
@@ -83,7 +87,7 @@ class ObserveResult extends Component {
                         x--;
                         break;
                     default:
-                    break;
+                        break;
                 }
                 robot.transition()
                     .duration(50)
