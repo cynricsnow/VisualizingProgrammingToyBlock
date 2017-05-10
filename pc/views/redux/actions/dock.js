@@ -39,6 +39,7 @@ export const update = (XMLDom) => {
         }
     }).responseText);
     const { blocks, code } = res;
+    console.log(blocks)
     return {
         type: UPDATE,
         blocks,

@@ -23,7 +23,7 @@ const INPUT_TYPES = [
 const INPUT_TYPES_SYMBOL = [
     '\u2744',
     '\u21AD'
-]
+];
 const OUTPUT_TYPES = [
     'output_back',
     'output_anticlockwiserotate',
@@ -45,6 +45,14 @@ const SYMBOL_TYPES = [
     '<=',
     '>',
     '>='
+];
+const SYMBOL_TYPES_SYMBOL = [
+    '=',
+    '\u2260',
+    '<',
+    '\u2264',
+    '>',
+    '\u2265'
 ];
 const SYMBOL_TYPES_TEXT = [
     'EQ',
@@ -133,7 +141,7 @@ const dataToBlocks = (data) => {
                 break;
             case SYMBOL:
                 block.type = SYMBOL;
-                block.symbol = SYMBOL_TYPES[data[i].value];
+                block.symbol = SYMBOL_TYPES_SYMBOL[data[i].value];
                 block.x = x;
                 block.y = y;
                 y--;
