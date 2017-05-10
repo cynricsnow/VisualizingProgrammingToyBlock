@@ -43,6 +43,7 @@ class ObserveResult extends Component {
                 dir = dir > 0 ? dir : dir + 4;
                 switch (dir % 4) {
                     case 0:
+                    case 4:
                         y++;
                         break;
                     case 1:
@@ -77,6 +78,7 @@ class ObserveResult extends Component {
                 dir = dir > 0 ? dir : dir + 4;
                 switch (dir) {
                     case 0:
+                    case 4:
                         y--;
                         break;
                     case 1:
