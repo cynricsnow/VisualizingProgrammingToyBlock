@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import loadXMLString from '../../common/loadXMLString';
+import StringToXMLDom from '../../common/StringToXMLDom';
 import { logic_initial, logic_modify } from '../../redux/actions/logic';
 import './custom';
 import toolbox from './toolbox';
@@ -25,7 +25,7 @@ import styles from './styles';
 class LogicBlockly extends Component {
     componentDidMount() {
         const { init } = this.props;
-        const xml = loadXMLString(toolbox).childNodes[0];
+        const xml = StringToXMLDom(toolbox).childNodes[0];
         const workspace = Blockly.inject('blockly-workspace', {
             media: './media/',
             toolbox: xml

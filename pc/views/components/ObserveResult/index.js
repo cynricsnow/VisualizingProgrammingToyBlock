@@ -19,17 +19,19 @@ let width = 0;
 )
 class ObserveResult extends Component {
     input_temperature() {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', '/api/input_temperature', false);
-        xhr.send(null);
-        const temperature = +JSON.parse(xhr.response);
+        const temperature = +JSON.parse($.ajax({
+            type: 'GET',
+            url: '/api/input_temperature',
+            async: false
+        }).responseText);
         return temperature;
     }
     input_distance() {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', '/api/input_distance', false);
-        xhr.send(null);
-        const distance = +JSON.parse(xhr.response);
+        const distance = +JSON.parse($.ajax({
+            type: 'GET',
+            url: '/api/input_distance',
+            async: false
+        }).responseText);
         return distance;
     }
     output_forward(distance) {

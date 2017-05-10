@@ -1,5 +1,5 @@
 'use strict'
-import loadXMLString from '../../common/loadXMLString';
+import StringToXMLDom from '../../common/StringToXMLDom';
 
 import * as dock from '../actions/dock';
 import * as logic from '../actions/logic';
@@ -14,7 +14,7 @@ const reducer = (state = INITIAL_STATE, action = {}) => {
         case dock.DOCK:
             return {
                 ...state,
-                XMLDom: loadXMLString(action.XMLDom).childNodes[0],
+                XMLDom: StringToXMLDom(action.xml).childNodes[0],
             };
         case logic.LOGIC_INITIAL:
             return {

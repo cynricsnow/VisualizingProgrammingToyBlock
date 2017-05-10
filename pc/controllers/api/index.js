@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { dataToBlocks, preProcesser, dataToTree, treeToXMLDom, TreeNodeToCode } = require('./convert');
+const { dataToBlocks, processData, recoverData, dataToTree, treeToXML, TreeNodeToCode, XMLToData } = require('./convert');
 
 const START = 1;
 const END = 2;
@@ -76,7 +76,7 @@ const fake = [{
     value: 0
 }, {
     type: NUMBER,
-    value: 50
+    value: -50
 }, {
     type: ELSE
 }, {
@@ -84,7 +84,7 @@ const fake = [{
     value: 1
 }, {
     type: NUMBER,
-    value: 90
+    value: -90
 }, {
     type: END
 }, {
@@ -93,16 +93,29 @@ const fake = [{
 
 router.post('/dock', (req, res) => {
     const blocks = dataToBlocks(fake);
-    const ripeData = preProcesser(fake);
+    const ripeData = processData(fake);
     const root = dataToTree(ripeData);
-    const XMLDom = treeToXMLDom(root);
+    const xml = treeToXML(root);
     const code = TreeNodeToCode(root);
     res.status(200).json({
         blocks,
-        XMLDom,
+        xml,
         code
     });
 });
+
+router.post('/update', (req, res) => {
+    const xml = req.body.xml;
+    const data = XMLToData(xml);
+    const root = dataToTree(data);
+    const code = TreeNodeToCode(root);
+    const rawData = recoverData(data);
+    const blocks = dataToBlocks(rawData);
+    res.status(200).json({
+        blocks,
+        code
+    });
+})
 
 router.get('/input_distance', (req, res) => {
     const distance = (Math.random() * 100).toFixed(2);

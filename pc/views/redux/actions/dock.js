@@ -1,16 +1,40 @@
 'use strict'
+import XMLDomToString from '../../common/XMLDomToString';
+
 export const DOCK = 'VISUAL/DOCK';
+export const UPDATE = 'VISUAL/UPDATE';
 
 export const dock = () => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('post', '/api/dock', false);
-    xhr.send('fake');
-    const res = JSON.parse(xhr.response);
-    const { blocks, XMLDom, code } = res;
+    const res = JSON.parse($.ajax({
+        type: 'POST',
+        url: '/api/dock',
+        async: false,
+        data: {
+            ip: 'fake'
+        }
+    }).responseText);
+    const { blocks, xml, code } = res;
     return {
         type: DOCK,
         blocks,
-        XMLDom,
+        xml,
+        code
+    }
+};
+
+export const update = (XMLDom) => {
+    const res = JSON.parse($.ajax({
+        type: 'POST',
+        url: '/api/update',
+        async: false,
+        data: {
+            xml: XMLDomToString(XMLDom)
+        }
+    }).responseText);
+    const { blocks, code } = res;
+    return {
+        type: UPDATE,
+        blocks,
         code
     }
 };

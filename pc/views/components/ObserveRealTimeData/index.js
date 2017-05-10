@@ -2,28 +2,29 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { observe_getdata } from '../../redux/actions/observe';
+
 import styles from './styles';
 
 @connect(
     state => ({
-        temperatures: state.observe.temperatures,
-        distances: state.observe.distances
+        realTimeData: state.observe.realTimeData
+    }),
+    dispatch => ({
+        getData() {
+            dispatch(observe_getdata());
+        }
     })
 )
 class ObserveRealTimeData extends Component {
     render() {
-        const { temperatures, distances } = this.props;
+        const { realTimeData } = this.props;
         return (
             <div className={styles.content}>
                 <div className={styles.result} ref='output'>
                     {
-                        temperatures.map((value, index) => (
-                            <p key={index}>温度探测器{index+1}:</p>
-                        ))
-                    }
-                    {
-                        distances.map((value, index) => (
-                            <p key={index}>超声波探测器{index+1}:</p>
+                        realTimeData.map((item, index) => (
+                            <p key={index}>{item.type}传感器:{item.value}</p>
                         ))
                     }
                 </div>

@@ -55,6 +55,13 @@ const SYMBOL_TYPES_TEXT = [
     'GTE'
 ];
 
+let flag = 1;
+
+class TreeNode {
+    constructor(type, value = null, child = null, next = {}) {
+
+    }
+}
 
 const dataToBlocks = (data) => {
     const blocks = [];
@@ -155,12 +162,6 @@ const dataToBlocks = (data) => {
     return blocks;
 };
 
-class TreeNode {
-    constructor(type, value = null, child = null, next = {}) {
-
-    }
-}
-
 const dataToTree = (data) => {
     const root = {};
     let current = root;
@@ -247,9 +248,9 @@ const dataToTree = (data) => {
         }
     }
     return root;
-}
+};
 
-const preProcesser = (raw) => {
+const processData = (raw) => {
     const data = raw.concat();
     for (let i = 0; i < data.length; i++) {
         if (data[i].type === SYMBOL) {
@@ -258,6 +259,18 @@ const preProcesser = (raw) => {
         }
     }
     return data;
+};
+
+const recoverData = (data) => {
+    const raw = data.concat();
+    for (let i = 0; i < raw.length; i++) {
+        if (raw[i].type === SYMBOL) {
+            const symbol = raw.splice(i, 1)[0];
+            raw.splice(i + 1, 0, symbol);
+            i++;
+        }
+    }
+    return raw;
 }
 
 const angleNormalize = (angle) => {
@@ -271,7 +284,7 @@ const angleNormalize = (angle) => {
     } else {
         return 90;
     }
-}
+};
 
 const TreeNodeToXMLCreator = (doc) => (node) => {
     const TreeNodeToXML = TreeNodeToXMLCreator(doc);
@@ -346,16 +359,12 @@ const TreeNodeToXMLCreator = (doc) => (node) => {
             block = doc.createElement('block');
             block.setAttribute('type', 'math_number');
             field = doc.createElement('field');
-            field.setAttribute('name', 'NUM');
+            field.setAttribute('name', 'TIMES');
             text = doc.createTextNode(node.value);
             field.appendChild(text);
-            block.appendChild(field);
-            value = doc.createElement('value');
-            value.setAttribute('name', 'TIMES');
-            value.appendChild(block);
             block = doc.createElement('block');
-            block.setAttribute('type', 'controls_repeat_ext');
-            block.appendChild(value);
+            block.setAttribute('type', 'controls_repeat');
+            block.appendChild(field);
             child = TreeNodeToXML(node.child);
             statement = doc.createElement('statement');
             statement.setAttribute('name', 'DO');
@@ -450,9 +459,9 @@ const TreeNodeToXMLCreator = (doc) => (node) => {
         default:
             break;
     }
-}
+};
 
-const treeToXMLDom = (root) => {
+const treeToXML = (root) => {
     let doc = new DOMParser().parseFromString(' ', 'text/xml');
     let xml = doc.createElement('xml');
     let block = TreeNodeToXMLCreator(doc)(root);
@@ -462,7 +471,7 @@ const treeToXMLDom = (root) => {
     doc.appendChild(xml);
     const str = new XMLSerializer().serializeToString(doc);
     return str;
-}
+};
 
 const TreeNodeToCode = (node, indent = 0) => {
     let space = Array(indent).fill('    ').join('');
@@ -481,6 +490,18 @@ const TreeNodeToCode = (node, indent = 0) => {
             type = node.value + 2;
             if (node.value < 2 && child < 0) {
                 type -= 2;
+            }
+            switch (type) {
+                case 0:
+                case 2:
+                    child = Math.abs(child);
+                    break;
+                case 1:
+                case 3:
+                    child = angleNormalize(child);
+                    break;
+                default:
+                    break;
             }
             code += 'this.' + OUTPUT_TYPES[type] + `(${child});\n`;
             if (node.next.type) {
@@ -530,8 +551,155 @@ const TreeNodeToCode = (node, indent = 0) => {
             break;
     }
     return code;
+};
+
+const blockToData = (block) => {
+    const data = [];
+    let element = {};
+    const type = block.getAttribute('type');
+    let children = block.childNodes;
+    switch (type) {
+        case 'controls_if':
+            element.type = IF;
+            data.push(element);
+            data.push({ type: START });
+            data.push({ type: END });
+            if (children) {
+                for (let i = 0; i < children.length; i++) {
+                    let name = children[i].getAttribute('name');
+                    if (name === 'IF0') {
+                        data.splice(1, 0, ...XMLDomToData(children[i]));
+                        continue;
+                    } else if (name === 'ELSE') {
+                        data.splice(data.length - 1, 0, { type: ELSE }, ...XMLDomToData(children[i]));
+                    } else if (children[i].tagName !== 'next') {
+                        data.splice(data.length - 1, 0, ...XMLDomToData(children[i]));
+                    } else {
+                        data.push(...XMLDomToData(children[i]));
+                    }
+                }
+            }
+
+            break;
+        case 'controls_repeat':
+            element.type = FOR;
+            if (children) {
+                for (let i = 0; i < children.length; i++) {
+                    let name = children[i].getAttribute('name');
+                    if (name === 'TIMES') {
+                        element.value = XMLDomToData(children[i])[0];
+                        data.push(element);
+                        data.push({ type: START });
+                        data.push({ type: END });
+                    } else if (children[i].tagName !== 'next') {
+                        data.splice(data.length - 1, 0, ...XMLDomToData(children[i]));
+                    } else {
+                        data.push(...XMLDomToData(children[i]));
+                    }
+                }
+            }
+            break;
+        case 'logic_compare':
+        case 'math_number':
+        case 'math_arithmetic':
+        case 'math_number_property':
+        case 'math_round':
+        case 'text':
+            if (children) {
+                for (let i = 0; i < children.length; i++) {
+                    data.push(...XMLDomToData(children[i]));
+                }
+            }
+            break;
+        case 'input_temperature':
+        case 'input_distance':
+            element.type = INPUT;
+            element.value = INPUT_TYPES.indexOf(type);
+            data.push(element);
+            break;
+        case 'output_back':
+        case 'output_anticlockwiserotate':
+            flag = -1;
+        case 'output_forward':
+        case 'output_clockwiserotate':
+        case 'output_speak':
+        case 'output_blink':
+            element.type = OUTPUT;
+            element.value = OUTPUT_TYPES.indexOf(type) - ((flag == 1) ? 2 : 0);
+            data.push(element);
+            if (children) {
+                for (let i = 0; i < children.length; i++) {
+                    data.push(...XMLDomToData(children[i]));
+                }
+            }
+            break;
+        default:
+            break;
+    }
+    return data;
+};
+
+const fieldToElement = (field) => {
+    const name = field.getAttribute('name');
+    const text = field.childNodes[0].data;
+    const element = {};
+    switch (name) {
+        case 'NUM':
+        case 'DISTANCE':
+        case 'ANGLE':
+            element.type = NUMBER;
+            element.value = flag * parseInt(text);
+            flag = 1;
+            break;
+        case 'TEXT':
+            element.type = TEXT;
+            element.value = text;
+            break;
+        case 'OP':
+            element.type = SYMBOL;
+            element.value = SYMBOL_TYPES_TEXT.indexOf(text);
+            break;
+        case 'COLOR':
+            element.type = COLOR;
+            element.value = text;
+            break;
+        case 'TIMES':
+            return parseInt(text);
+        default:
+            break;
+    }
+    return element;
+}
+
+const XMLDomToData = (XMLDom) => {
+    const data = [];
+    switch (XMLDom.tagName) {
+        case 'block':
+            return data.concat(blockToData(XMLDom));
+        case 'field':
+            return data.concat(fieldToElement(XMLDom));
+        default:
+            break;
+    }
+    const children = XMLDom.childNodes;
+    if (children) {
+        for (let i = 0; i < children.length; i++) {
+            data.push(...XMLDomToData(children[i]));
+        }
+    }
+    return data;
+}
+
+const XMLToData = (xml) => {
+    const doc = new DOMParser().parseFromString(xml, 'text/xml');
+    const XMLDom = doc.childNodes[0];
+    const data = [];
+    for (let i = 0; i < XMLDom.childNodes.length; i++) {
+        data.push(...XMLDomToData(XMLDom.childNodes[i]));
+    }
+    return data;
 }
 
 module.exports = {
-    dataToBlocks, preProcesser, dataToTree, treeToXMLDom, TreeNodeToCode
+    dataToBlocks, processData, recoverData, dataToTree, treeToXML, TreeNodeToCode, XMLToData
 }

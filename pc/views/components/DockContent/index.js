@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { dock } from '../../redux/actions/dock';
+import { dock, update } from '../../redux/actions/dock';
 import cube from './cube.png';
 import styles from './styles.css';
 
@@ -38,18 +38,24 @@ const BLOCK_TEXTS = [
 
 @connect(
     state => ({
-        toyBlocks: state.dock
+        toyBlocks: state.dock,
+        workspace: state.logic.workspace
     }),
     dispatch => ({
-        handleClick(e) {
+        handleDock(e) {
             dispatch(dock());
+        },
+        handleUpdate(e) {
+            const { workspace } = this.props;
+            const XMLDom = Blockly.Xml.workspaceToDom(workspace);
+            dispatch(update(XMLDom));
         }
     })
 )
 class DockContent extends Component {
     shouldComponentUpdate(nextProps, nextState) {
         const { toyBlocks } = nextProps;
-        if (toyBlocks) {
+        if (toyBlocks.length) {
             this.draw(toyBlocks);
         }
         return false;
@@ -60,7 +66,8 @@ class DockContent extends Component {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         if (blocks) {
             const times = blocks[blocks.length - 1].x + 2;
-            const length = Math.floor((canvas.width - 40) / times) - 2;
+            let length = Math.floor((canvas.width - 40) / times) - 2;
+            length = length > 56 ? 56 : length;
             for (let i = 0; i < blocks.length; i++) {
                 let { type, x, y, value, symbol } = blocks[i];
                 ctx.fillStyle = BLOCK_COLORS[type - 1];
@@ -123,24 +130,24 @@ class DockContent extends Component {
             }
             ctx.fillStyle = '#FFFFFF';
             ctx.fillRect(0, (length + 2) * 3 - length / 2 + 10, length * 2, length * 2);
-
         }
     }
     componentDidMount() {
-        const { toyBlocks, handleClick } = this.props;
-        if (toyBlocks) {
+        const { toyBlocks } = this.props;
+        if (toyBlocks.length) {
             this.draw();
         }
     }
     render() {
-        const { handleClick } = this.props;
+        const { handleDock, handleUpdate } = this.props;
         return (
             <div className={styles.content}>
                 <div className={styles.result}>
                     <canvas ref='canvas' width={800} height={300}></canvas>
                 </div>
                 <div className={styles.controller}>
-                    <button type='button' className='btn' onClick={handleClick.bind(this)}><img src={cube}/></button>
+                    <button type='button' className='btn' onClick={handleDock.bind(this)}><img src={cube}/></button>
+                    <button type='button' className='btn' onClick={handleUpdate.bind(this)}><img src={cube}/></button>
                 </div>
             </div>
         )
