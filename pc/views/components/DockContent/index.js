@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { dock, update } from '../../redux/actions/dock';
-import cube from './cube.png';
 import styles from './styles.css';
 
 const BLOCK_COLORS = [
@@ -146,8 +145,9 @@ class DockContent extends Component {
                     <canvas ref='canvas' width={800} height={300}></canvas>
                 </div>
                 <div className={styles.controller}>
-                    <button type='button' className='btn' onClick={handleDock.bind(this)}><img src={cube}/></button>
-                    <button type='button' className='btn' onClick={handleUpdate.bind(this)}><img src={cube}/></button>
+                    <button type='button' className='btn' onClick={handleDock.bind(this)}><span className='glyphicon glyphicon-arrow-down'></span></button>
+                    <button type='button' className='btn' onClick={handleDock.bind(this)}><span className='glyphicon glyphicon-refresh'></span></button>
+                    <button type='button' className='btn' onClick={handleUpdate.bind(this)}><span className='glyphicon glyphicon-arrow-up'></span></button>
                 </div>
             </div>
         )
