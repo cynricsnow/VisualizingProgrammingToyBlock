@@ -49,7 +49,6 @@ class LogicBlockly extends Component {
     //     update(XMLDom);
     // }
     render() {
-        console.log(this.props)
         return (
             <div className={styles.content}>
                 <div id='blockly-workspace'></div>

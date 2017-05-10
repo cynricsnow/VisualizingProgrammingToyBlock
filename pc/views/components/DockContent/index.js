@@ -85,8 +85,11 @@ class DockContent extends Component {
                     case 6:
                     case 8:
                     case 9:
-                        ctx.font = "12px sans-serif";
                         text = BLOCK_TEXTS[type - 1];
+                        if (length <= 32) {
+                            text = text.charAt(0);
+                        }
+                        ctx.font = "12px sans-serif";
                         width = ctx.measureText(text).width;
                         ctx.fillText(text, pointX + (length - width) / 2, pointY + length / 2 + 6);
                         break;
@@ -104,13 +107,17 @@ class DockContent extends Component {
                         ctx.fillText(text, pointX + (length - width) / 2, pointY + length / 2 + 7);
                         break;
                     case 7:
+                        text = BLOCK_TEXTS[type - 1];
+                        if (length <= 32) {
+                            text = text.charAt(0);
+                        }
+                        text += '-' + value;
                         ctx.font = "12px sans-serif";
-                        text = BLOCK_TEXTS[type - 1] + '-' + value;
                         width = ctx.measureText(text).width;
                         ctx.fillText(text, pointX + (length - width) / 2, pointY + length / 2 + 6);
                         break;
                     case 10:
-                        ctx.font = length - 6 + "px sans-serif";;
+                        ctx.font = length - 10 + "px sans-serif";;
                         text = symbol;
                         width = ctx.measureText(text).width;
                         ctx.fillText(text, pointX + (length - width) / 2, pointY + length / 4 * 3);
