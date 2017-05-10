@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { dock, update } from '../../redux/actions/dock';
+import { assimlate, dock, update } from '../../redux/actions/dock';
 import styles from './styles.css';
 
 const BLOCK_COLORS = [
@@ -37,10 +37,13 @@ const BLOCK_TEXTS = [
 
 @connect(
     state => ({
-        toyBlocks: state.dock,
+        toyBlocks: state.dock.blocks,
         workspace: state.logic.workspace
     }),
     dispatch => ({
+        handleAssimilate(e) {
+            dispatch(assimlate());
+        },
         handleDock(e) {
             dispatch(dock());
         },
@@ -138,14 +141,14 @@ class DockContent extends Component {
         }
     }
     render() {
-        const { handleDock, handleUpdate } = this.props;
+        const { handleAssimilate, handleDock, handleUpdate } = this.props;
         return (
             <div className={styles.content}>
                 <div className={styles.result}>
                     <canvas ref='canvas' width={800} height={300}></canvas>
                 </div>
                 <div className={styles.controller}>
-                    <button type='button' className='btn' onClick={handleDock.bind(this)}><span className='glyphicon glyphicon-arrow-down'></span></button>
+                    <button type='button' className='btn' onClick={handleAssimilate.bind(this)}><span className='glyphicon glyphicon-arrow-down'></span></button>
                     <button type='button' className='btn' onClick={handleDock.bind(this)}><span className='glyphicon glyphicon-refresh'></span></button>
                     <button type='button' className='btn' onClick={handleUpdate.bind(this)}><span className='glyphicon glyphicon-arrow-up'></span></button>
                 </div>

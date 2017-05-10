@@ -1,8 +1,15 @@
 'use strict'
 import XMLDomToString from '../../common/XMLDomToString';
 
+export const ASSIMILATE = 'VISUAL/ASSIMILATE';
 export const DOCK = 'VISUAL/DOCK';
 export const UPDATE = 'VISUAL/UPDATE';
+
+export const assimlate = () => {
+    return {
+        type: ASSIMILATE
+    }
+}
 
 export const dock = () => {
     const res = JSON.parse($.ajax({
@@ -35,6 +42,7 @@ export const update = (XMLDom) => {
     return {
         type: UPDATE,
         blocks,
+        XMLDom,
         code
     }
 };

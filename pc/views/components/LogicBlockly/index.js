@@ -11,7 +11,8 @@ import styles from './styles';
 @connect(
     state => ({
         workspace: state.logic.workspace,
-        workspaceBlocks: state.logic.XMLDom
+        workspaceBlocks: state.logic.XMLDom,
+        flag: state.dock.flag
     }),
     dispatch => ({
         init(workspace) {
@@ -48,6 +49,7 @@ class LogicBlockly extends Component {
         update(XMLDom);
     }
     render() {
+        console.log(this.props)
         return (
             <div className={styles.content}>
                 <div id='blockly-workspace'></div>

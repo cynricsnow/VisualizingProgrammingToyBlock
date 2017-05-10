@@ -16,6 +16,11 @@ const reducer = (state = INITIAL_STATE, action = {}) => {
                 ...state,
                 XMLDom: StringToXMLDom(action.xml).childNodes[0],
             };
+        case dock.UPDATE:
+            return {
+                ...state,
+                XMLDom: action.XMLDom
+            };
         case logic.LOGIC_INITIAL:
             return {
                 ...state,
