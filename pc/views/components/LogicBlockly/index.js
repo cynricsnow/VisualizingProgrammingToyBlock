@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import StringToXMLDom from '../../common/StringToXMLDom';
-import { logic_initial, logic_modify } from '../../redux/actions/logic';
+import { logic_initial } from '../../redux/actions/logic';
 import './custom';
 import toolbox from './toolbox';
 import styles from './styles';
@@ -15,11 +15,11 @@ import styles from './styles';
         flag: state.dock.flag
     }),
     dispatch => ({
+        // update(xml) {
+        //     dispatch(logic_modify(xml));
+        // },
         init(workspace) {
             dispatch(logic_initial(workspace));
-        },
-        update(xml) {
-            dispatch(logic_modify(xml));
         }
     })
 )
@@ -42,12 +42,12 @@ class LogicBlockly extends Component {
         }
         return false;
     }
-    componentWillUnmount() {
-        const { workspace, update } = this.props;
-        const XMLDom = Blockly.Xml.workspaceToDom(workspace);
-
-        update(XMLDom);
-    }
+    // componentWillUnmount() {
+    //     const { workspace, update } = this.props;
+    //     const XMLDom = Blockly.Xml.workspaceToDom(workspace);
+    //
+    //     update(XMLDom);
+    // }
     render() {
         console.log(this.props)
         return (

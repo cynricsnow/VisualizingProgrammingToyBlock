@@ -1,6 +1,6 @@
 'use strict'
-import * as dock from '../actions/dock';
-import * as observe from '../actions/observe';
+import { DOCK, UPDATE } from '../actions/dock';
+import { OBSERVE_GETDATA } from '../actions/observe';
 
 const INITIAL_STATE = {
     realTimeData: [],
@@ -9,18 +9,18 @@ const INITIAL_STATE = {
 
 const reducer = (state = INITIAL_STATE, action = {}) => {
     switch (action.type) {
-        case dock.DOCK:
+        case DOCK:
             return {
                 ...state,
                 realTimeData: [{type:'温度', value: 30}, {type: '超声波', value: 40}],
                 code: action.code
             };
-        case dock.UPDATE:
+        case UPDATE:
             return {
                 ...state,
                 code: action.code
             }
-        case observe.OBSERVE_GETDATA:
+        case OBSERVE_GETDATA:
             return {
                 ...state
             }

@@ -1,5 +1,5 @@
 'use strict'
-import * as dock from '../actions/dock';
+import { ASSIMILATE, DOCK, UPDATE } from '../actions/dock';
 
 const INITIAL_STATE = {
     blocks: [],
@@ -8,17 +8,17 @@ const INITIAL_STATE = {
 
 const reducer = (state = INITIAL_STATE, action = {}) => {
     switch (action.type) {
-        case dock.ASSIMILATE:
+        case ASSIMILATE:
             return {
                 ...state,
                 flag: !state.flag
             }
-        case dock.DOCK:
+        case DOCK:
             return {
                 ...state,
                 blocks: action.blocks
             };
-        case dock.UPDATE:
+        case UPDATE:
             return {
                 ...state,
                 blocks: action.blocks

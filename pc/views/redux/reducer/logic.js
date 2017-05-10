@@ -1,8 +1,8 @@
 'use strict'
 import StringToXMLDom from '../../common/StringToXMLDom';
 
-import * as dock from '../actions/dock';
-import * as logic from '../actions/logic';
+import { DOCK, UPDATE } from '../actions/dock';
+import { LOGIC_INITIAL, LOGIC_MODIFY } from '../actions/logic';
 
 const INITIAL_STATE = {
     XMLDom: null,
@@ -11,22 +11,22 @@ const INITIAL_STATE = {
 
 const reducer = (state = INITIAL_STATE, action = {}) => {
     switch (action.type) {
-        case dock.DOCK:
+        case DOCK:
             return {
                 ...state,
                 XMLDom: StringToXMLDom(action.xml).childNodes[0],
             };
-        case dock.UPDATE:
+        case UPDATE:
             return {
                 ...state,
                 XMLDom: action.XMLDom
             };
-        case logic.LOGIC_INITIAL:
+        case LOGIC_INITIAL:
             return {
                 ...state,
                 workspace: action.workspace
             }
-        case logic.LOGIC_MODIFY:
+        case LOGIC_MODIFY:
             return {
                 ...state,
                 XMLDom: action.XMLDom
