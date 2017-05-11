@@ -14,7 +14,7 @@ const reducer = (state = INITIAL_STATE, action = {}) => {
         case DOCK:
             return {
                 ...state,
-                XMLDom: StringToXMLDom(action.xml).childNodes[0],
+                XMLDom: StringToXMLDom(action.xml).childNodes[0]
             };
         case UPDATE:
             return {
