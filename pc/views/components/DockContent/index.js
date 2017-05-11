@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import DockController from '../DockController';
 import { assimlate, dock, update } from '../../redux/actions/dock';
 import styles from './styles.css';
 
@@ -154,11 +155,10 @@ class DockContent extends Component {
                 <div className={styles.result}>
                     <canvas ref='canvas' width={800} height={300}></canvas>
                 </div>
-                <div className={styles.controller}>
-                    <button type='button' className='btn' onClick={handleAssimilate.bind(this)}><span className='glyphicon glyphicon-arrow-down'></span></button>
-                    <button type='button' className='btn' onClick={handleDock.bind(this)}><span className='glyphicon glyphicon-refresh'></span></button>
-                    <button type='button' className='btn' onClick={handleUpdate.bind(this)}><span className='glyphicon glyphicon-arrow-up'></span></button>
-                </div>
+                <DockController
+                    handleAssimilate={handleAssimilate.bind(this)}
+                    handleDock={handleDock.bind(this)}
+                    handleUpdate={handleUpdate.bind(this)} />
             </div>
         )
     }
