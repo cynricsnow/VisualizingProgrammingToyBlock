@@ -201,7 +201,9 @@ const dataToTree = (data) => {
     let child;
     let condition;
     let elseStatement;
+    let index = 0;
     for (let i = 0; i < data.length; i++) {
+        index = 0;
         switch (data[i].type) {
             case START:
                 break;
@@ -217,8 +219,27 @@ const dataToTree = (data) => {
             case OUTPUT:
                 current.type = OUTPUT;
                 current.value = data[i].value;
-                current.child = dataToTree(data.slice(i + 1));
-                i++;
+                if (data[i].value === 2) {
+                    if (i + 1 < data.length) {
+                        if (data[i + 1].type === INPUT ||
+                            data[i + 1].type === NUMBER ||
+                            data[i + 1].type === TEXT) {
+                            current.child = dataToTree(data.slice(i + 1));
+                            i++;
+                        } else if (data[i + 1].type === SYMBOL) {
+                            child = dataToTree(data.slice(i + 1));
+                            current.child = child.root;
+                            i = i + 1 + child.index;
+                        } else {
+                            current.child = {};
+                        }
+                    } else {
+                        current.child = {};
+                    }
+                } else {
+                    current.child = dataToTree(data.slice(i + 1));
+                    i++;
+                }
                 current.next = {};
                 current = current.next;
                 break;
@@ -241,7 +262,7 @@ const dataToTree = (data) => {
                 current.type = IF;
                 condition = dataToTree(data.slice(i + 1));
                 current.condition = condition.root;
-                i = i + 3;
+                i = i + data.slice(i + 1).findIndex(item => item.type === START);
                 child = dataToTree(data.slice(i + 1));
                 current.child = child.root;
                 i = i + 1 + child.index;
@@ -262,11 +283,22 @@ const dataToTree = (data) => {
             case SYMBOL:
                 root.type = SYMBOL;
                 root.value = data[i].value;
-                root.child = dataToTree(data.slice(i + 1));
-                root.child.next = dataToTree(data.slice(i + 2));
+                if (i + 1 < data.length && (data[i + 1].type === INPUT || data[i + 1].type === NUMBER)) {
+                    root.child = dataToTree(data.slice(i + 1));
+                    index++;
+                    if (i + 2 < data.length && (data[i + 2].type === INPUT || data[i + 2].type === NUMBER)) {
+                        root.child.next = dataToTree(data.slice(i + 2));
+                        index++;
+                    } else {
+                        root.child.next = {};
+                    }
+                } else {
+                    root.child = {};
+                    root.child.next = {};
+                }
                 return {
                     root,
-                    index: 2
+                    index
                 }
             case TEXT:
                 root.type = TEXT;

@@ -92,7 +92,6 @@ const fake = [{
 }]
 
 router.post('/dock', (req, res) => {
-    // const blocks = dataToBlocks(fake);
     const ripeData = processData(fake);
     const blocks = dataToBlocks(ripeData);
     const root = dataToTree(ripeData);
@@ -109,8 +108,6 @@ router.post('/update', (req, res) => {
     const data = XMLToData(req.body.xml);
     const root = dataToTree(data);
     const code = TreeNodeToCode(root);
-    // const rawData = recoverData(data);
-    // const blocks = dataToBlocks(rawData);
     const blocks = dataToBlocks(data);
     res.status(200).json({
         blocks,
