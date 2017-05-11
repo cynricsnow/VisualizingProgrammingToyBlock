@@ -217,7 +217,11 @@ class ObserveResult extends Component {
         frames = 0;
         const robot = d3.select('#robot');
         robot.style('transform', 'translate(0, 0) rotate(0deg)');
-        eval(code);
+        try {
+            eval(code);
+        } catch (e) {
+            alert('逻辑错误');
+        }
         eval('this.output_blink("#ff8c1a")');
         this.reset();
     }

@@ -18,7 +18,8 @@ const BLOCK_COLORS = [
     '#5B80A5',
     '#5B80A5',
     '#5BA58C',
-    '#9fA55B'
+    '#9fA55B',
+    '#FF0000'
 ];
 
 const BLOCK_TEXTS = [
@@ -134,6 +135,14 @@ class DockContent extends Component {
                         ctx.fillStyle = blocks[i].value;
                         ctx.fillRect(pointX + 4, pointY + 4, width, width);
                         break;
+                    case 13:
+                        ctx.strokeStyle = 'black';
+                        ctx.beginPath();
+                        ctx.moveTo(pointX, pointY);
+                        ctx.lineTo(pointX + length, pointY + length);
+                        ctx.moveTo(pointX + length, pointY);
+                        ctx.lineTo(pointX, pointY + length);
+                        ctx.stroke();
                     default:
                         break;
                 }

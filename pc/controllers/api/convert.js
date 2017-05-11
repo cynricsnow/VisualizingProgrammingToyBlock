@@ -16,6 +16,8 @@ const SYMBOL = 10;
 const TEXT = 11;
 const COLOR = 12;
 
+const WRONG = 13;
+
 const INPUT_TYPES = [
     'input_temperature',
     'input_distance'
@@ -72,95 +74,118 @@ class TreeNode {
 }
 
 const dataToBlocks = (data) => {
+    const array = data.concat();
     const blocks = [];
     let x = 0;
     let y = 0;
     let block;
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < array.length; i++) {
         block = {};
-        switch(data[i].type) {
+        switch(array[i].type) {
             case START:
                 block.type = START;
                 block.x = x;
                 block.y = 0;
                 x++;
+                y = 0;
                 break;
             case END:
                 block.type = END;
                 block.x = x;
                 block.y = 0;
                 x++;
+                y = 0;
                 break;
             case INPUT:
                 block.type = INPUT;
-                block.symbol = INPUT_TYPES_SYMBOL[data[i].value];
-                block.x = x;
-                block.y = y;
-                y--;
-                if (y === 0) {
+                block.symbol = INPUT_TYPES_SYMBOL[array[i].value];
+                if (i === 0) {
                     x++;
                 }
+                block.x = x - 1;
+                block.y = y;
+                y = y == 3 ? 1 : 0;
                 break;
             case OUTPUT:
                 block.type = OUTPUT;
-                block.symbol = OUTPUT_TYPES_SYMBOL[data[i].value];
+                block.symbol = OUTPUT_TYPES_SYMBOL[array[i].value];
                 block.x = x;
                 block.y = 0;
-                y++;
+                x++;
+                y = 1;
                 break;
             case NUMBER:
                 block.type = NUMBER;
-                block.value = data[i].value;
-                block.x = x;
-                block.y = y;
-                y--;
-                if (y === 0) {
+                block.value = array[i].value;
+                if (i === 0) {
                     x++;
                 }
+                block.x = x - 1;
+                block.y = y;
+                y = y == 3 ? 1 : 0;
                 break;
             case WHILE:
                 break;
             case FOR:
                 block.type = FOR;
-                block.value = data[i].value;
+                block.value = array[i].value;
                 block.x = x;
                 block.y = 0;
                 x++;
+                y = 0;
                 break;
             case IF:
                 block.type = IF;
                 block.x = x;
                 block.y = 0;
-                y += 3;
+                x++;
+                y = 0;
                 break;
             case ELSE:
                 block.type = ELSE;
                 block.x = x;
                 block.y = 0;
                 x++;
+                y = 0;
                 break;
             case SYMBOL:
                 block.type = SYMBOL;
-                block.symbol = SYMBOL_TYPES_SYMBOL[data[i].value];
-                block.x = x;
-                block.y = y;
-                y--;
+                block.symbol = SYMBOL_TYPES_SYMBOL[array[i].value];
+                if (i === 0) {
+                    x++;
+                }
+                block.x = x - 1;
+                block.y = 2;
+                y = 3;
+                if (i + 1 >= array.length || (array[i + 1].type !== INPUT && array[i + 1].type !== NUMBER)) {
+                    array.splice(i + 1, 0, {type: WRONG});
+                }
+                if (i + 2 >= array.length || (array[i + 2].type !== INPUT && array[i + 2].type !== NUMBER)) {
+                    array.splice(i + 1, 1, {type: WRONG}, {type: WRONG});
+                }
                 break;
             case TEXT:
                 block.type = TEXT;
-                block.value = data[i].value;
-                block.x = x;
+                block.value = array[i].value;
+                if (i === 0) {
+                    x++;
+                }
+                block.x = x - 1;
                 block.y = y;
-                x++;
-                y--;
+                y = 0;
                 break;
             case COLOR:
                 block.type = COLOR;
-                block.value = data[i].value;
-                block.x = x;
+                block.value = array[i].value;
+                block.x = x - 1;
                 block.y = y;
-                x++;
-                y--;
+                y = 0;
+                break;
+            case WRONG:
+                block.type = WRONG;
+                block.x = x - 1;
+                block.y = y;
+                y = y == 3 ? 1 : 0;
                 break;
             default:
                 break;
@@ -702,9 +727,10 @@ const XMLToData = (xml) => {
     const doc = new DOMParser().parseFromString(xml, 'text/xml');
     const XMLDom = doc.childNodes[0];
     const data = [];
-    for (let i = 0; i < XMLDom.childNodes.length; i++) {
-        data.push(...XMLDomToData(XMLDom.childNodes[i]));
-    }
+    // for (let i = 0; i < XMLDom.childNodes.length; i++) {
+    //     data.push(...XMLDomToData(XMLDom.childNodes[i]));
+    // }
+    data.push(...XMLDomToData(XMLDom.childNodes[0]));
     return data;
 }
 
