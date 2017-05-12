@@ -39,9 +39,5 @@ class App extends Component {
         )
     }
 }
-// <Switch>
-//     <Route exact path="/" component={DockPage}/>
-//     <Route path="/logic" component={LogicPage}/>
-//     <Route path="/observe" component={ObservePage}/>
-// </Switch>
+
 export default App;
