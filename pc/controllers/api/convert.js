@@ -706,7 +706,7 @@ const blockToData = (block) => {
 
 const fieldToElement = (field) => {
     const name = field.getAttribute('name');
-    const text = field.childNodes[0].data;
+    const text = (typeof field.childNodes[0] === 'object') ? field.childNodes[0].data : '';
     const element = {};
     switch (name) {
         case 'NUM':
@@ -759,9 +759,6 @@ const XMLToData = (xml) => {
     const doc = new DOMParser().parseFromString(xml, 'text/xml');
     const XMLDom = doc.childNodes[0];
     const data = [];
-    // for (let i = 0; i < XMLDom.childNodes.length; i++) {
-    //     data.push(...XMLDomToData(XMLDom.childNodes[i]));
-    // }
     data.push(...XMLDomToData(XMLDom.childNodes[0]));
     return data;
 }

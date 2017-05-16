@@ -17,12 +17,33 @@
     overflow: auto;
 }
 
+.dock {
+    height: 100%;
+    min-height: 300px;
+    width: 100%;
+    padding: 8px;
+    box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.37), 0 0 1px rgba(0, 0, 0, 0.37);
+    border-radius: 4px;
+}
+
 .left {
     height: 100%;
     width: calc(100% - 308px);
     min-width: 596px;
     float: left;
     margin-right: 8px;
+}
+
+.lefttop {
+    height: 50%;
+    min-height: 300px;
+    width: 100%;
+}
+
+.leftbottom {
+    height: 50%;
+    min-height: 300px;
+    min-width: 596px;
 }
 
 .right {
