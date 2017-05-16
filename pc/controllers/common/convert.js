@@ -18,6 +18,79 @@ const COLOR = 12;
 
 const WRONG = 13;
 
+const fake = [{
+    type: OUTPUT,
+    value: 2
+}, {
+    type: TEXT,
+    value: '你好'
+}, {
+    type: IF
+}, {
+    type: INPUT,
+    value: 0
+}, {
+    type: SYMBOL,
+    value: 4
+}, {
+    type: NUMBER,
+    value: 30
+}, {
+    type: START
+}, {
+    type: OUTPUT,
+    value: 3
+}, {
+    type: COLOR,
+    value: '#ff0000'
+}, {
+    type: ELSE
+}, {
+    type: OUTPUT,
+    value: 3
+}, {
+    type: COLOR,
+    value: '#33ff33'
+}, {
+    type: END
+}, {
+    type: FOR,
+    value: 5
+}, {
+    type: START
+}, {
+    type: IF
+}, {
+    type: INPUT,
+    value: 1
+}, {
+    type: SYMBOL,
+    value: 4
+}, {
+    type: NUMBER,
+    value: 50
+}, {
+    type: START
+}, {
+    type: OUTPUT,
+    value: 0
+}, {
+    type: NUMBER,
+    value: -50
+}, {
+    type: ELSE
+}, {
+    type: OUTPUT,
+    value: 1
+}, {
+    type: NUMBER,
+    value: -90
+}, {
+    type: END
+}, {
+    type: END
+}];
+
 const INPUT_TYPES = [
     'input_temperature',
     'input_distance'
@@ -764,5 +837,5 @@ const XMLToData = (xml) => {
 }
 
 module.exports = {
-    dataToBlocks, processData, recoverData, dataToTree, treeToXML, TreeNodeToCode, XMLToData
+    fake, dataToBlocks, processData, recoverData, dataToTree, treeToXML, TreeNodeToCode, XMLToData
 }
