@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { hide } from '../../redux/actions/dock';
 import styles from './styles';
 import robot from './robot.png';
 
@@ -15,6 +16,11 @@ let width = 0;
 @connect(
     state => ({
         code: state.observe.code
+    }),
+    dispatch => ({
+        hideButton() {
+            dispatch(hide());
+        }
     })
 )
 class ObserveResult extends Component {
@@ -200,6 +206,7 @@ class ObserveResult extends Component {
         }, frames * 1000);
     }
     componentDidMount() {
+        const { hideButton } = this.props;
         const { svg } = this.refs;
         const info = svg.getBoundingClientRect();
         height = info.height;
@@ -208,6 +215,7 @@ class ObserveResult extends Component {
         robot.attr('x', width / 2 - 30 + 'px')
             .attr('y', height / 2 - 30 + 'px');
         robot.style('transform', 'translate(0, 0) rotate(0deg)');
+        hideButton();
     }
     runCode() {
         const { code } = this.props;

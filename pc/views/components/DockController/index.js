@@ -7,6 +7,7 @@ import styles from './styles.css';
 
 @connect(
     state => ({
+        hide: state.dock.hide,
         workspace: state.logic.workspace
     }),
     dispatch => ({
@@ -25,12 +26,12 @@ import styles from './styles.css';
 )
 class DockController extends Component {
     render() {
-        const { handleAssimilate, handleDock, handleUpdate } = this.props;
+        const { hide, handleAssimilate, handleDock, handleUpdate } = this.props;
         return (
             <div className={styles.controller}>
-                <button type='button' className='btn' onClick={handleAssimilate}><span className='glyphicon glyphicon-repeat'></span></button>
+                {!hide ? <button type='button' className='btn' onClick={handleAssimilate}><span className='glyphicon glyphicon-repeat'></span></button> : ''}
                 <button type='button' className='btn' onClick={handleDock}><span className='glyphicon glyphicon-equalizer'></span></button>
-                <button type='button' className='btn' onClick={handleUpdate.bind(this)}><span className='glyphicon glyphicon-floppy-disk'></span></button>
+                {!hide ? <button type='button' className='btn' onClick={handleUpdate.bind(this)}><span className='glyphicon glyphicon-floppy-disk'></span></button> : ''}
             </div>
         )
     }

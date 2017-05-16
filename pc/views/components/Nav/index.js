@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import logo from './logo.png';
 
 class Nav extends Component {
-    liIsActive(url) {
+    isActive(url) {
         return location.pathname === url ? 'active' : '';
     }
     render() {
@@ -22,10 +22,10 @@ class Nav extends Component {
                     </div>
                     <div className='collapse navbar-collapse' id='navbar-menu'>
                         <ul className='nav navbar-nav navbar-right'>
-                            <li className={this.liIsActive('/')}>
+                            <li className={this.isActive('/')}>
                                 <Link to='/'>独立模式</Link>
                             </li>
-                            <li className={this.liIsActive('/observe')}>
+                            <li className={this.isActive('/observe')}>
                                 <Link to='/observe'>观察模式</Link>
                             </li>
                         </ul>

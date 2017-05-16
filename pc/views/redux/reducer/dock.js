@@ -1,9 +1,10 @@
 'use strict'
-import { ASSIMILATE, DOCK, UPDATE } from '../actions/dock';
+import { ASSIMILATE, DOCK, UPDATE, SHOW, HIDE } from '../actions/dock';
 
 const INITIAL_STATE = {
     blocks: [],
-    flag: false
+    flag: false,
+    hide: false
 }
 
 const reducer = (state = INITIAL_STATE, action = {}) => {
@@ -23,6 +24,16 @@ const reducer = (state = INITIAL_STATE, action = {}) => {
                 ...state,
                 blocks: action.blocks
             };
+        case SHOW:
+            return {
+                ...state,
+                hide: false
+            };
+        case HIDE:
+            return {
+                ...state,
+                hide: true
+            }
         default:
             return state;
     }

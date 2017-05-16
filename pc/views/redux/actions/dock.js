@@ -4,12 +4,12 @@ import XMLDomToString from '../../common/XMLDomToString';
 export const ASSIMILATE = 'VISUAL/ASSIMILATE';
 export const DOCK = 'VISUAL/DOCK';
 export const UPDATE = 'VISUAL/UPDATE';
+export const SHOW = 'VISUAL/SHOW';
+export const HIDE = 'VISUAL/HIDE';
 
-export const assimlate = () => {
-    return {
-        type: ASSIMILATE
-    }
-}
+export const assimlate = () => ({
+    type: ASSIMILATE
+});
 
 export const dock = () => {
     const res = JSON.parse($.ajax({
@@ -46,3 +46,11 @@ export const update = (XMLDom) => {
         code
     }
 };
+
+export const show = () => ({
+    type: SHOW
+});
+
+export const hide = () => ({
+    type: HIDE
+});
