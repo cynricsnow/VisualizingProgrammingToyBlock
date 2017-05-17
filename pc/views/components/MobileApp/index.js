@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import DockContent from '../DockContent';
+import DockPage from '../DockPage';
 import LogicBlockly from '../LogicBlockly';
 import LogicResult from '../LogicResult';
 import ObserveResult from '../ObserveResult';
@@ -80,7 +80,7 @@ class MobileApp extends Component {
                                         </div>
                                     </div>
                             : <div className={styles.box}>
-                                  <DockContent />
+                                  <DockPage />
                               </div>
                     }
                 </div>
