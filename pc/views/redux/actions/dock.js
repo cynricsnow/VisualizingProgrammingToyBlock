@@ -21,7 +21,6 @@ export const dock = (dispatch, src, dest) => {
         url: `http://${src}:8000/dock`,
         timeout: 1000,
         data: {
-            src,
             dest
         },
         xhrFields: {'Access-Control-Allow-Origin': '*' }
