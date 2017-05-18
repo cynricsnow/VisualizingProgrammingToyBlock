@@ -140,12 +140,6 @@ const SYMBOL_TYPES_TEXT = [
 
 let flag = 1;
 
-class TreeNode {
-    constructor(type, value = null, child = null, next = {}) {
-
-    }
-}
-
 const dataToBlocks = (data) => {
     const array = data.concat();
     const blocks = [];
