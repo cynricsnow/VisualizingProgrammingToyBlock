@@ -11,7 +11,7 @@ import { dock } from '../../redux/actions/dock';
             let { src, dest } = this.refs;
             src = src.value ? src.value : src.placeholder;
             dest = dest.value ? dest.value : dest.placeholder;
-            dispatch(dock(src, dest));
+            dock(dispatch, src, dest);
             $('#dockModal').modal('hide');
         }
     })

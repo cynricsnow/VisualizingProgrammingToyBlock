@@ -11,38 +11,41 @@ export const assimlate = () => ({
     type: ASSIMILATE
 });
 
-export const dock = (src, dest) => {
+export const dock = (dispatch, src, dest) => {
     const pattern = /^(\d{1,3}\.){3}\d{1,3}$/;
     if (!(pattern.test(src) && pattern.test(dest))) {
-        return {
-            type: 'error'
-        };
+        return;
     }
-    const data = JSON.parse($.ajax({
+    $.ajax({
         type: 'POST',
-        url: `http://10.111.6.240:8000/dock`,
-        async: false,
+        url: `http://${src}:8000/dock`,
+        timeout: 1000,
         data: {
             src,
             dest
         },
         xhrFields: {'Access-Control-Allow-Origin': '*' }
-    }).responseText);
-    const res = JSON.parse($.ajax({
-        type: 'POST',
-        url: '/api/dock',
-        async: false,
-        data: {
-            blocks: data.blocks
+    }).success(data => {
+        const res = JSON.parse($.ajax({
+            type: 'POST',
+            url: '/api/dock',
+            async: false,
+            data: {
+                blocks: data.blocks
+            }
+        }).responseText);
+        const { blocks, xml, code } = res;
+        dispatch({
+            type: DOCK,
+            blocks,
+            xml,
+            code
+        });
+    }).fail((jqXHR, textStatus) => {
+        if (textStatus == 'timeout') {
+            alert('对接超时');
         }
-    }).responseText);
-    const { blocks, xml, code } = res;
-    return {
-        type: DOCK,
-        blocks,
-        xml,
-        code
-    };
+    });
 };
 
 export const update = (XMLDom) => {
