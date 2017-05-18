@@ -389,6 +389,20 @@ const dataToTree = (data) => {
 };
 
 const processData = (raw) => {
+    for (let i = 0; i < raw.length; i++) {
+        raw[i].type = +raw[i].type;
+        switch (raw[i].type) {
+            case 3:
+            case 4:
+            case 5:
+            case 7:
+            case 10:
+                raw[i].value = +raw[i].value;
+                break;
+            default:
+                break;
+        }
+    };
     const data = raw.concat();
     for (let i = 0; i < data.length; i++) {
         if (data[i].type === SYMBOL) {

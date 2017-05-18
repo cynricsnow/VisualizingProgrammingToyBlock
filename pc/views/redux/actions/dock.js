@@ -12,12 +12,22 @@ export const assimlate = () => ({
 });
 
 export const dock = () => {
+    const data = JSON.parse($.ajax({
+        type: 'POST',
+        url: 'http://10.111.6.240:8000/dock',
+        async: false,
+        data: {
+            src: '10.111.6.240',
+            dest: '127.0.0.1'
+        },
+        xhrFields: {'Access-Control-Allow-Origin': '*' }
+    }).responseText);
     const res = JSON.parse($.ajax({
         type: 'POST',
         url: '/api/dock',
         async: false,
         data: {
-            ip: 'fake'
+            blocks: data.blocks
         }
     }).responseText);
     const { blocks, xml, code } = res;
