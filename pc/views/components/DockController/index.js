@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { assimlate, dock, update } from '../../redux/actions/dock';
+import { assimlate, update } from '../../redux/actions/dock';
+import Modal from '../Modal';
 import styles from './styles.css';
 
 @connect(
@@ -14,9 +15,6 @@ import styles from './styles.css';
         handleAssimilate(e) {
             dispatch(assimlate());
         },
-        handleDock(e) {
-            dispatch(dock());
-        },
         handleUpdate(e) {
             const { workspace } = this.props;
             const XMLDom = Blockly.Xml.workspaceToDom(workspace);
@@ -25,13 +23,19 @@ import styles from './styles.css';
     })
 )
 class DockController extends Component {
+    handleDock(e) {
+        $('#dockModal').modal('show');
+    }
     render() {
-        const { hide, handleAssimilate, handleDock, handleUpdate } = this.props;
+        const { hide, handleAssimilate, handleUpdate } = this.props;
         return (
-            <div className={styles.controller}>
-                {!hide ? <button type='button' className='btn' onClick={handleAssimilate}><span className='glyphicon glyphicon-repeat'></span></button> : ''}
-                <button type='button' className='btn' onClick={handleDock}><span className='glyphicon glyphicon-equalizer'></span></button>
-                {!hide ? <button type='button' className='btn' onClick={handleUpdate.bind(this)}><span className='glyphicon glyphicon-floppy-disk'></span></button> : ''}
+            <div>
+                <div className={styles.controller}>
+                    {!hide ? <button type='button' className='btn' onClick={handleAssimilate}><span className='glyphicon glyphicon-repeat'></span></button> : ''}
+                    <button type='button' className='btn' onClick={this.handleDock}><span className='glyphicon glyphicon-equalizer'></span></button>
+                    {!hide ? <button type='button' className='btn' onClick={handleUpdate.bind(this)}><span className='glyphicon glyphicon-floppy-disk'></span></button> : ''}
+                </div>
+                <Modal/>
             </div>
         )
     }

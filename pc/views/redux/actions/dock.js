@@ -11,14 +11,14 @@ export const assimlate = () => ({
     type: ASSIMILATE
 });
 
-export const dock = () => {
+export const dock = (src, dest) => {
     const data = JSON.parse($.ajax({
         type: 'POST',
         url: 'http://10.111.6.240:8000/dock',
         async: false,
         data: {
-            src: '10.111.6.240',
-            dest: '127.0.0.1'
+            src,
+            dest
         },
         xhrFields: {'Access-Control-Allow-Origin': '*' }
     }).responseText);
