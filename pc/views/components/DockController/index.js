@@ -18,7 +18,9 @@ import styles from './styles.css';
         handleUpdate(e) {
             const { workspace } = this.props;
             const XMLDom = Blockly.Xml.workspaceToDom(workspace);
-            dispatch(update(XMLDom));
+            if (XMLDom.childNodes.length) {
+                dispatch(update(XMLDom));
+            }
         }
     })
 )

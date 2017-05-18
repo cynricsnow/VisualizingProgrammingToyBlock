@@ -12,9 +12,15 @@ export const assimlate = () => ({
 });
 
 export const dock = (src, dest) => {
+    const pattern = /^(\d{1,3}\.){3}\d{1,3}$/;
+    if (!(pattern.test(src) && pattern.test(dest))) {
+        return {
+            type: 'error'
+        };
+    }
     const data = JSON.parse($.ajax({
         type: 'POST',
-        url: 'http://10.111.6.240:8000/dock',
+        url: `http://10.111.6.240:8000/dock`,
         async: false,
         data: {
             src,
@@ -36,7 +42,7 @@ export const dock = (src, dest) => {
         blocks,
         xml,
         code
-    }
+    };
 };
 
 export const update = (XMLDom) => {
@@ -54,7 +60,7 @@ export const update = (XMLDom) => {
         blocks,
         XMLDom,
         code
-    }
+    };
 };
 
 export const show = () => ({
