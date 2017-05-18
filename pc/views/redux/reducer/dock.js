@@ -4,7 +4,9 @@ import { ASSIMILATE, DOCK, UPDATE, SHOW, HIDE } from '../actions/dock';
 const INITIAL_STATE = {
     blocks: [],
     flag: false,
-    hide: false
+    hide: false,
+    src: '',
+    dest: ''
 }
 
 const reducer = (state = INITIAL_STATE, action = {}) => {
@@ -17,7 +19,9 @@ const reducer = (state = INITIAL_STATE, action = {}) => {
         case DOCK:
             return {
                 ...state,
-                blocks: action.blocks
+                blocks: action.blocks,
+                src: action.src,
+                dest: action.dest
             };
         case UPDATE:
             return {

@@ -39,7 +39,9 @@ export const dock = (dispatch, src, dest) => {
             type: DOCK,
             blocks,
             xml,
-            code
+            code,
+            src,
+            dest
         });
     }).fail((jqXHR, textStatus) => {
         if (textStatus == 'timeout') {

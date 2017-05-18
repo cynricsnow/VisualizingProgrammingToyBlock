@@ -15,7 +15,9 @@ let width = 0;
 
 @connect(
     state => ({
-        code: state.observe.code
+        code: state.observe.code,
+        src: state.dock.src,
+        dest: state.dock.dest
     }),
     dispatch => ({
         hideButton() {
@@ -25,20 +27,36 @@ let width = 0;
 )
 class ObserveResult extends Component {
     input_temperature() {
-        const temperature = +JSON.parse($.ajax({
-            type: 'GET',
-            url: '/api/input_temperature',
-            async: false
-        }).responseText);
-        return temperature;
+        const { src, dest } = this.props;
+        if (src) {
+            const temperature = +JSON.parse($.ajax({
+                type: 'POST',
+                url: `http://${src}:8000/input_temperature`,
+                async: false,
+                data: {
+                    dest
+                },
+                xhrFields: {'Access-Control-Allow-Origin': '*' }
+            }).responseText);
+            return temperature;
+        }
+        return;
     }
     input_distance() {
-        const distance = +JSON.parse($.ajax({
-            type: 'GET',
-            url: '/api/input_distance',
-            async: false
-        }).responseText);
-        return distance;
+        const { src, dest } = this.props;
+        if (src) {
+            const distance = +JSON.parse($.ajax({
+                type: 'POST',
+                url: `http://${src}:8000/input_distance`,
+                async: false,
+                data: {
+                    dest
+                },
+                xhrFields: {'Access-Control-Allow-Origin': '*' }
+            }).responseText);
+            return distance;
+        }
+        return;
     }
     output_forward(distance) {
         const times = distance / 20;
