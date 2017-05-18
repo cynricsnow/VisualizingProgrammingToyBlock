@@ -12,7 +12,7 @@ const reducer = (state = INITIAL_STATE, action = {}) => {
         case DOCK:
             return {
                 ...state,
-                realTimeData: [{type:'温度', value: 30}, {type: '超声波', value: 40}],
+                realTimeData: [{type:'温度', value: ' ? 度'}, {type: '超声波', value: ' ? 厘米'}],
                 code: action.code
             };
         case UPDATE:
@@ -22,7 +22,8 @@ const reducer = (state = INITIAL_STATE, action = {}) => {
             }
         case OBSERVE_GETDATA:
             return {
-                ...state
+                ...state,
+                realTimeData: action.data
             }
         default:
             return state;
