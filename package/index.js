@@ -15,7 +15,8 @@ const createWindow = () => {
           nodeIntegration: false
       }
   });
-  mainWindow.loadURL('http://106.15.90.104:3000');
+  // mainWindow.loadURL('http://106.15.90.104:3000');
+  mainWindow.loadURL('http://127.0.0.1:3000');
   mainWindow.on('closed', () => {
       mainWindow = null;
   });

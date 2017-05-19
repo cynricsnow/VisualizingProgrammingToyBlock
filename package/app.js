@@ -3,7 +3,10 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+const data = require('./data_pb.js');
+const Data = data.Data;
 const fake = require('./fake.js').fake;
+const bytes = require('./data1.js').bytes;
 
 app.use(bodyParser.json({ limit: '200kb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -15,9 +18,16 @@ app.get('/', function (req, res) {
 
 app.post('/dock', (req, res) => {
     console.log(req.body);
-    console.log(fake);
+    const blockArray = Data.deserializeBinary(bytes).getBlockList();
+    const array = [];
+    for (let i = 0; i < blockArray.length; i++) {
+        let type = blockArray[i].getType();
+        let value = blockArray[i].getValue();
+        array.push({type, value});
+    }
+    console.log(array);
     res.setHeader('Access-Control-Allow-Origin','*');
-    res.status(200).send({blocks: fake});
+    res.status(200).send({blocks: array});
 })
 
 app.post('/input_distance', (req, res) => {

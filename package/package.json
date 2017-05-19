@@ -12,9 +12,10 @@
   "author": "Cynric <cynricsnow@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "electron": "~1.6.2",
     "body-parser": "^1.17.2",
+    "electron": "~1.6.2",
     "electron-packager": "^8.7.0",
-    "express": "^4.15.3"
+    "express": "^4.15.3",
+    "google-protobuf": "^3.3.0"
   }
 }
