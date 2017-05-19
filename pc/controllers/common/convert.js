@@ -89,6 +89,27 @@ const fake = [{
     type: END
 }, {
     type: END
+}, {
+    type: WHILE
+}, {
+    type: INPUT,
+    value: 0
+}, {
+    type: SYMBOL,
+    value: 4
+}, {
+    type: NUMBER,
+    value: 0
+}, {
+    type: START
+}, {
+    type: OUTPUT,
+    value: 3
+}, {
+    type: COLOR,
+    value: '#000000'
+}, {
+    type: END
 }];
 
 const INPUT_TYPES = [
@@ -192,6 +213,11 @@ const dataToBlocks = (data) => {
                 y = y == 3 ? 1 : 0;
                 break;
             case WHILE:
+                block.type = WHILE;
+                block.x = x;
+                block.y = 0;
+                x++;
+                y = 0;
                 break;
             case FOR:
                 block.type = FOR;
@@ -315,6 +341,15 @@ const dataToTree = (data) => {
                 root.value = data[i].value;
                 return root;
             case WHILE:
+                current.type = WHILE;
+                condition = dataToTree(data.slice(i + 1));
+                current.condition = condition.root;
+                i = i + data.slice(i + 1).findIndex(item => item.type === START);
+                child = dataToTree(data.slice(i + 1));
+                current.child = child.root;
+                i = i + 1 + child.index;
+                current.next = {};
+                current = current.next;
                 break;
             case FOR:
                 current.type = FOR;
@@ -500,7 +535,30 @@ const TreeNodeToXMLCreator = (doc) => (node) => {
         case COLOR:
             return node.value;
         case WHILE:
-            break;
+            block = doc.createElement('block');
+            block.setAttribute('type', 'controls_whileUntil');
+            field = doc.createElement('field');
+            field.setAttribute('name', 'MODE');
+            text = doc.createTextNode('WHILE');
+            field.appendChild(text);
+            block.appendChild(field);
+            value = doc.createElement('value');
+            value.setAttribute('name', 'BOOL');
+            child = TreeNodeToXML(node.condition);
+            value.appendChild(child);
+            block.appendChild(value);
+            child = TreeNodeToXML(node.child);
+            statement = doc.createElement('statement');
+            statement.setAttribute('name', 'DO');
+            statement.appendChild(child);
+            block.appendChild(statement);
+            if (node.next.type) {
+                next = doc.createElement('next');
+                child = TreeNodeToXML(node.next);
+                next.appendChild(child);
+                block.appendChild(next);
+            }
+            return block;
         case FOR:
             block = doc.createElement('block');
             block.setAttribute('type', 'math_number');
@@ -658,6 +716,12 @@ const TreeNodeToCode = (node, indent = 0) => {
             code += node.value;
             break;
         case WHILE:
+            condition = TreeNodeToCode(node.condition);
+            statement = TreeNodeToCode(node.child, indent + 1);
+            code += `while (${condition}) {\n${statement}${space}}\n`;
+            if (node.next.type) {
+                code += TreeNodeToCode(node.next, indent);
+            }
             break;
         case FOR:
             child = TreeNodeToCode(node.child, indent + 1);
@@ -715,7 +779,6 @@ const blockToData = (block) => {
                     let name = children[i].getAttribute('name');
                     if (name === 'IF0') {
                         data.splice(1, 0, ...XMLDomToData(children[i]));
-                        continue;
                     } else if (name === 'ELSE') {
                         data.splice(data.length - 1, 0, { type: ELSE }, ...XMLDomToData(children[i]));
                     } else if (children[i].tagName !== 'next') {
@@ -737,6 +800,25 @@ const blockToData = (block) => {
                         data.push(element);
                         data.push({ type: START });
                         data.push({ type: END });
+                    } else if (children[i].tagName !== 'next') {
+                        data.splice(data.length - 1, 0, ...XMLDomToData(children[i]));
+                    } else {
+                        data.push(...XMLDomToData(children[i]));
+                    }
+                }
+            }
+            break;
+        case 'controls_whileUntil':
+            element.type = WHILE;
+            data.push(element);
+            data.push({ type: START });
+            data.push({ type: END });
+            if (children) {
+                for (let i = 0; i < children.length; i++) {
+                    let name = children[i].getAttribute('name');
+                    if (name === 'BOOL') {
+                        data.splice(1, 0, ...XMLDomToData(children[i]));
+                    } else if (name === 'MODE') {
                     } else if (children[i].tagName !== 'next') {
                         data.splice(data.length - 1, 0, ...XMLDomToData(children[i]));
                     } else {
