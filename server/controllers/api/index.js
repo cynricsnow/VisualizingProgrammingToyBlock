@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { fake, dataToBlocks, processData, recoverData, dataToTree, treeToXML, TreeNodeToCode, XMLToData } = require('../common/convert');
+const { dataToBlocks, processData, recoverData, dataToTree, treeToXML, TreeNodeToCode, XMLToData } = require('../common/convert');
 
 router.post('/dock', (req, res) => {
     const toy = req.body.blocks;
