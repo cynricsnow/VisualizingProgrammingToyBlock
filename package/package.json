@@ -1,0 +1,20 @@
+{
+  "name": "package",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "packager": "electron-packager ./ electron-quick-start --win32 --out ./pack --electron-version 1.6.2 --overwrite"
+  },
+  "keywords": [],
+  "author": "Cynric <cynricsnow@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "~1.6.2",
+    "body-parser": "^1.17.2",
+    "electron-packager": "^8.7.0",
+    "express": "^4.15.3"
+  }
+}
