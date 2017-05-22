@@ -249,8 +249,8 @@ class ObservePanel extends Component {
     render() {
         return (
             <div className={styles.content}>
-                <svg ref="svg" className={styles.svg}>
-                    <image href={robot} id='robot' className={styles.robot} onClick={this.runCode.bind(this)} width='60' height='60'></image>
+                <svg ref="svg" className={styles.svg} onClick={this.runCode.bind(this)}>
+                    <image href={robot} id='robot' className={styles.robot} width='60' height='60'></image>
                     <circle id="light" r="0" style={{fill: 'rgba(0, 0, 0, 0)', strokeWidth: 10}}></circle>
                 </svg>
                 <div id='tip' className={styles.tip}>
