@@ -46,7 +46,12 @@ const SYMBOL_TYPES = [
     '<',
     '<=',
     '>',
-    '>='
+    '>=',
+    '+',
+    '-',
+    '*',
+    '/',
+    '^'
 ];
 const SYMBOL_TYPES_SYMBOL = [
     '=',
@@ -54,7 +59,12 @@ const SYMBOL_TYPES_SYMBOL = [
     '<',
     '\u2264',
     '>',
-    '\u2265'
+    '\u2265',
+    '+',
+    '-',
+    'x',
+    '÷',
+    '^'
 ];
 const SYMBOL_TYPES_TEXT = [
     'EQ',
@@ -62,7 +72,12 @@ const SYMBOL_TYPES_TEXT = [
     'LT',
     'LTE',
     'GT',
-    'GTE'
+    'GTE',
+    'ADD',
+    'MINUS',
+    'MULTIPLY',
+    'DIVIDE',
+    'POWER'
 ];
 
 let flag = 1;
@@ -522,7 +537,11 @@ const TreeNodeToXMLCreator = (doc) => (node) => {
             return block;
         case SYMBOL:
             block = doc.createElement('block');
-            block.setAttribute('type', 'logic_compare');
+            if (node.value < 6) {
+                block.setAttribute('type', 'logic_compare');
+            } else {
+                block.setAttribute('type', 'math_arithmetic');
+            }
             field = doc.createElement('field');
             field.setAttribute('name', 'OP');
             text = doc.createTextNode(SYMBOL_TYPES_TEXT[node.value]);
@@ -649,6 +668,16 @@ const TreeNodeToCode = (node, indent = 0) => {
             }
             break;
         case SYMBOL:
+            if (node.value === 10) {
+                code += 'Math.pow(';
+                child = TreeNodeToCode(node.child);
+                code += child;
+                code += ', ';
+                child = TreeNodeToCode(node.child.next);
+                code += child;
+                code += ')';
+                break;
+            }
             child = TreeNodeToCode(node.child);
             code += child;
             code += ' ';

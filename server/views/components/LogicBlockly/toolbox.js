@@ -26,14 +26,6 @@ const toolbox = (
                     </block>
                 </value>
             </block>
-            <block type="math_number_property">
-                <value name="NUMBER_TO_CHECK">
-                    <block type="math_number">
-                        <field name="NUM">0</field>
-                    </block>
-                </value>
-            </block>
-            <block type="math_round"></block>
         </category>
         <category id="catText" colour="160" name="文本">
             <block type="text"></block>
