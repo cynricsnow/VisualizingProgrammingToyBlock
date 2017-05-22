@@ -34,13 +34,27 @@ const draw = (canvas, blocks) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (blocks) {
         const times = blocks[blocks.length - 1].x + 2;
-        let length = Math.floor((canvas.width - 40) / times) - 2;
+        let line = 1;
+        let length = Math.floor((canvas.width - 120) / times) - 2;
+        while (length <= 40) {
+            let temp = length;
+            line++;
+            length = Math.floor((canvas.width - 120) * line / times) - 2;
+            if (5 * line * (length + 2) >= canvas.height) {
+                line--;
+                length = temp;
+                break;
+            }
+        }
         length = length > 56 ? 56 : length;
+        let count = Math.floor((canvas.width - 120) / (length + 2));
         for (let i = 0; i < blocks.length; i++) {
             let { type, x, y, value, symbol } = blocks[i];
+            let row = Math.floor(x / count);
+            let col = x % count;
             ctx.fillStyle = BLOCK_COLORS[type - 1];
-            let pointX = (length + 2) * (x + 2) - 2;
-            let pointY = canvas.height / 2 - y * (length + 2) - length / 2;
+            let pointX = (length + 2) * (col + 2) - 2;
+            let pointY = (canvas.height / line) / 2 + (canvas.height / line) * row - y * (length + 2) - length / 2 + (line > 1 ? length : 0);
             let text;
             let width;
             ctx.fillRect(pointX, pointY, length, length);
@@ -112,7 +126,20 @@ const draw = (canvas, blocks) => {
             }
         }
         ctx.fillStyle = '#FFFFFF';
-        ctx.fillRect(0, canvas.height / 2 - length, length * 2, length * 2);
+        ctx.fillRect(0, (canvas.height / line) / 2 - length + (line > 1 ? length : 0), length * 2, length * 2);
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 5;
+        for (let i = 1; i < line; i++) {
+            let startX = (length + 2) * (count + 1) - 2 + length / 2;
+            let startY = (canvas.height / line) / 2 + (canvas.height / line) * (i - 1) + length / 2 + (line > 1 ? length : 0);
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(startX, startY + length);
+            ctx.lineTo(length, startY + length);
+            ctx.lineTo(length, startY + canvas.height / line - length / 2);
+            ctx.lineTo(length * 2 + 2, startY + canvas.height / line - length / 2);
+            ctx.stroke();
+        }
     }
 }
 
