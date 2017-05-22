@@ -244,7 +244,6 @@ class ObservePanel extends Component {
         } catch (e) {
             alert('逻辑错误');
         }
-        eval('this.output_blink("#ff8c1a")');
         this.reset();
     }
     render() {

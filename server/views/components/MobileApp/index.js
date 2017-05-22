@@ -10,6 +10,7 @@ import ObserveRealTimeData from '../ObserveRealTimeData';
 import Modal from '../Modal';
 import { assimlate, update } from '../../redux/actions/dock';
 import { stage_switch } from '../../redux/actions/stage';
+import { observe_switch } from '../../redux/actions/observe';
 import styles from './styles.css';
 
 @connect(
@@ -30,6 +31,12 @@ import styles from './styles.css';
         },
         handleSwitch(stage) {
             dispatch(stage_switch(stage));
+        },
+        handle2D(e) {
+            dispatch(observe_switch(false));
+        },
+        handle3D(e) {
+            dispatch(observe_switch(true));
         }
     })
 )
@@ -60,7 +67,7 @@ class MobileApp extends Component {
         handleSwitch(2);
     }
     render() {
-        const { stage, handleAssimilate, handleDock, handleUpdate } = this.props;
+        const { stage, handleAssimilate, handleDock, handleUpdate, handle2D, handle3D } = this.props;
         return (
             <div className={styles.outter}>
                 <div className={styles.container}>
@@ -90,8 +97,10 @@ class MobileApp extends Component {
                     </div>
                     <div className={styles.controller}>
                         {stage == 1 ? <button type='button' className='btn' onClick={handleAssimilate}><span className='glyphicon glyphicon-repeat'></span></button> : ''}
+                        {stage == 2 ? <button type='button' className='btn' onClick={handle2D}>2D</button> : ''}
                         <button type='button' className='btn' onClick={this.handleDock}><span className='glyphicon glyphicon-equalizer'></span></button>
                         {stage == 1 ? <button type='button' className='btn' onClick={handleUpdate.bind(this)}><span className='glyphicon glyphicon-floppy-disk'></span></button> : ''}
+                        {stage == 2 ? <button type='button' className='btn' onClick={handle3D}>3D</button> : ''}
                     </div>
                 </div>
                 <Modal />
