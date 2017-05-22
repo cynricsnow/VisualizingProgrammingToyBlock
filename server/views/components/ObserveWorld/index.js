@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { hide } from '../../redux/actions/dock';
 import styles from './styles';
 
 let frames = 0;
@@ -10,11 +9,6 @@ let frames = 0;
 @connect(
     state => ({
         code: state.observe.code
-    }),
-    dispatch => ({
-        hideButton() {
-            dispatch(hide());
-        }
     })
 )
 class ObserveWorld extends Component {
@@ -115,8 +109,6 @@ class ObserveWorld extends Component {
         }, frames * 1000);
     }
     componentDidMount() {
-        const { hideButton } = this.props;
-        hideButton();
         window.frames['world'].onclick = this.runCode.bind(this);
     }
     runCode() {

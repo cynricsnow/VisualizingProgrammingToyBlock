@@ -1,5 +1,6 @@
 'use strict'
 export const OBSERVE_GETDATA = 'VISUAL/OBSERVE_GETDATA';
+export const OBSERVE_SWITCH = 'VISUAL/OBSERVE_SWITCH';
 
 export const observe_getdata = (dispatch, src, dest) => {
     $.ajax({
@@ -21,3 +22,8 @@ export const observe_getdata = (dispatch, src, dest) => {
         }
     });
 };
+
+export const observe_switch = (dimension) => ({
+    type: OBSERVE_SWITCH,
+    dimension
+});

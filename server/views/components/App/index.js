@@ -9,7 +9,6 @@ import LogicBlockly from '../LogicBlockly';
 import LogicResult from '../LogicResult';
 import ObserveRealTimeData from '../ObserveRealTimeData';
 import ObserveResult from '../ObserveResult';
-import ObserveWorld from '../ObserveWorld';
 import styles from './styles.css';
 
 class App extends Component {
@@ -29,7 +28,7 @@ class App extends Component {
                             <div className={styles.leftbottom}>
                                 <Switch>
                                     <Route exact path="/" component={LogicBlockly}/>
-                                    <Route path="/observe" component={ObserveWorld}/>
+                                    <Route path="/observe" component={ObserveResult}/>
                                 </Switch>
                             </div>
                         </div>

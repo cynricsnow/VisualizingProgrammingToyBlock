@@ -25,12 +25,12 @@ const reducer = (state = INITIAL_STATE, action = {}) => {
             return {
                 ...state,
                 workspace: action.workspace
-            }
+            };
         case LOGIC_MODIFY:
             return {
                 ...state,
                 XMLDom: action.XMLDom
-            }
+            };
         default:
             return state;
     }

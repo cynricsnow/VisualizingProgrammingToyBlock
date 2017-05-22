@@ -15,7 +15,7 @@ const reducer = (state = INITIAL_STATE, action = {}) => {
             return {
                 ...state,
                 flag: !state.flag
-            }
+            };
         case DOCK:
             return {
                 ...state,
@@ -37,7 +37,7 @@ const reducer = (state = INITIAL_STATE, action = {}) => {
             return {
                 ...state,
                 hide: true
-            }
+            };
         default:
             return state;
     }
