@@ -18,6 +18,7 @@ import { dock } from '../../redux/actions/dock';
 )
 class Modal extends Component {
     render() {
+        console.log(returnCitySN.cip);
         const { handleDock } = this.props;
         return (
             <div className='modal fade bs-example-modal-sm' id='dockModal' role='dialog' aria-labelledby='exampleModalLabel'>
@@ -30,8 +31,8 @@ class Modal extends Component {
                         <div className='modal-body'>
                             <form>
                                 <div className='form-group'>
-                                    <label className='control-label'>本设备外网IP:</label>
-                                    <input type='text' className='form-control' ref='src' placeholder={returnCitySN.cip}/>
+                                    <label className='control-label'>本设备IP:</label>
+                                    <input type='text' className='form-control' ref='src' placeholder='127.0.0.1'/>
                                 </div>
                                 <div className='form-group'>
                                     <label className='control-label'>编程积木局域网IP:</label>
