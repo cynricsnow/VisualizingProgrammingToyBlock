@@ -1,6 +1,0 @@
-.result {
-    height: calc(100% - 100px);
-    width: 100%;
-    margin-bottom: 10px;
-    overflow: auto;
-}

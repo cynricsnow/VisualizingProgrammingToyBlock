@@ -106,7 +106,7 @@ BlockArray.addBlock(block);
 
 block = new Block();
 block.setType(BlockType.NUMBER);
-block.setValue('-50');
+block.setValue('50');
 BlockArray.addBlock(block);
 
 block = new Block();
@@ -120,7 +120,7 @@ BlockArray.addBlock(block);
 
 block = new Block();
 block.setType(BlockType.NUMBER);
-block.setValue('-90');
+block.setValue('90');
 BlockArray.addBlock(block);
 
 block = new Block();
