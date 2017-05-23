@@ -88,7 +88,13 @@ class ObserveWorld extends Component {
         }, frames * 1000);
         frames += times * 4;
     }
-    output_speak(text) {}
+    output_speak(text) {
+        setTimeout(() => {
+            text = encodeURI(text);
+            $('#reader').append(`<audio autoplay="autoplay"><source src="http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=2&text=${text}" type="audio/mpeg"/></audio>`);
+        }, frames * 1000);
+        frames += text.length;
+    }
     output_blink(color) {
         const rgb = parseInt(color.slice(1, 7), 16);
         setTimeout(() => {
@@ -106,6 +112,7 @@ class ObserveWorld extends Component {
             window.frames['world'].x = 0;
             window.frames['world'].y = 0;
             frames = 0;
+            $('#reader').empty();
         }, frames * 1000);
     }
     componentDidMount() {
@@ -128,6 +135,7 @@ class ObserveWorld extends Component {
         return (
             <div className={styles.content}>
                 <iframe name='world' src='world.html' />
+                <div id='reader' />
             </div>
         )
     }
