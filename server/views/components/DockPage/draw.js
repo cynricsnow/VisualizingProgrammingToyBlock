@@ -104,7 +104,10 @@ const draw = (canvas, blocks) => {
                     break;
                 case 11:
                     ctx.font = "14px sans-serif";
-                    text = '......';
+                    text = blocks[i].value;
+                    if (ctx.measureText(text).width >= length) {
+                        text = '......';
+                    }
                     width = ctx.measureText(text).width;
                     ctx.fillText(text, pointX + (length - width) / 2, pointY + length / 2 + 5);
                     break;

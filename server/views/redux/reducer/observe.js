@@ -13,7 +13,7 @@ const reducer = (state = INITIAL_STATE, action = {}) => {
         case DOCK:
             return {
                 ...state,
-                realTimeData: [{type:'温度', value: ' ? 度'}, {type: '超声波', value: ' ? 厘米'}],
+                realTimeData: action.inputs,
                 code: action.code
             };
         case UPDATE:

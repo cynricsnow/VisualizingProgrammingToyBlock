@@ -6,6 +6,7 @@ const { dataToBlocks, processData, recoverData, dataToTree, treeToXML, TreeNodeT
 
 router.post('/dock', (req, res) => {
     const toy = req.body.blocks;
+    const inputs = req.body.inputs;
     const ripeData = processData(toy);
     const blocks = dataToBlocks(ripeData);
     const root = dataToTree(ripeData);
@@ -14,7 +15,8 @@ router.post('/dock', (req, res) => {
     res.status(200).json({
         blocks,
         xml,
-        code
+        code,
+        inputs
     });
 });
 

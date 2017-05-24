@@ -30,17 +30,19 @@ export const dock = (dispatch, src, dest) => {
             url: '/api/dock',
             async: false,
             data: {
-                blocks: data.blocks
+                blocks: data.blocks,
+                inputs: data.inputs
             }
         }).responseText);
-        const { blocks, xml, code } = res;
+        const { blocks, xml, code, inputs } = res;
         dispatch({
             type: DOCK,
             blocks,
             xml,
             code,
             src,
-            dest
+            dest,
+            inputs
         });
     }).fail((jqXHR, textStatus) => {
         if (textStatus == 'timeout') {

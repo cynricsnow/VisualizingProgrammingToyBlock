@@ -26,8 +26,9 @@ app.post('/dock', (req, res) => {
         array.push({type, value});
     }
     console.log(array);
+    const inputs = [{type:'温度', value: ' ? 度'}, {type: '超声波', value: ' ? 厘米'}];
     res.setHeader('Access-Control-Allow-Origin','*');
-    res.status(200).send({blocks: array});
+    res.status(200).send({blocks: array, inputs});
 })
 
 app.post('/input_distance', (req, res) => {
