@@ -5,7 +5,6 @@ const INITIAL_STATE = {
     blocks: [],
     flag: false,
     hide: false,
-    src: '',
     dest: ''
 }
 
@@ -20,7 +19,6 @@ const reducer = (state = INITIAL_STATE, action = {}) => {
             return {
                 ...state,
                 blocks: action.blocks,
-                src: action.src,
                 dest: action.dest
             };
         case UPDATE:

@@ -11,7 +11,6 @@ let intervalId = null;
 @connect(
     state => ({
         realTimeData: state.observe.realTimeData,
-        src: state.dock.src,
         dest: state.dock.dest
     }),
     dispatch => ({
@@ -21,10 +20,10 @@ let intervalId = null;
                 clearTimeout(intervalId);
                 glyphicon.className = 'glyphicon glyphicon-eye-open';
             } else {
-                const { src, dest } = this.props;
-                if (src) {
+                const { dest } = this.props;
+                if (dest) {
                     intervalId = setInterval(() => {
-                        observe_getdata(dispatch, src, dest);
+                        observe_getdata(dispatch, dest);
                     }, 1000);
                     glyphicon.className = 'glyphicon glyphicon-eye-close';
                 }

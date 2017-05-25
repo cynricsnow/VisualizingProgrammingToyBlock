@@ -15,7 +15,6 @@ let width = 0;
 @connect(
     state => ({
         code: state.observe.code,
-        src: state.dock.src,
         dest: state.dock.dest
     })
 )
@@ -23,38 +22,10 @@ class ObservePanel extends Component {
     input_temperature() {
         const temperature = (Math.random() * 80 - 30).toFixed(1)
         return temperature;
-        // const { src, dest } = this.props;
-        // if (src) {
-        //     const temperature = +JSON.parse($.ajax({
-        //         type: 'POST',
-        //         url: `http://${src}:8000/input_temperature`,
-        //         async: false,
-        //         data: {
-        //             dest
-        //         },
-        //         xhrFields: {'Access-Control-Allow-Origin': '*' }
-        //     }).responseText);
-        //     return temperature;
-        // }
-        // return;
     }
     input_distance() {
         const distance = (Math.random() * 100).toFixed(2);
         return distance;
-        // const { src, dest } = this.props;
-        // if (src) {
-        //     const distance = +JSON.parse($.ajax({
-        //         type: 'POST',
-        //         url: `http://${src}:8000/input_distance`,
-        //         async: false,
-        //         data: {
-        //             dest
-        //         },
-        //         xhrFields: {'Access-Control-Allow-Origin': '*' }
-        //     }).responseText);
-        //     return distance;
-        // }
-        // return;
     }
     output_forward(distance) {
         const times = distance / 20;

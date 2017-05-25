@@ -2,10 +2,10 @@
 export const OBSERVE_GETDATA = 'VISUAL/OBSERVE_GETDATA';
 export const OBSERVE_SWITCH = 'VISUAL/OBSERVE_SWITCH';
 
-export const observe_getdata = (dispatch, src, dest) => {
+export const observe_getdata = (dispatch, dest) => {
     $.ajax({
         type: 'POST',
-        url: `http://${src}:8000/get_data`,
+        url: `http://${dest}:8000/get_data`,
         timeout: 1000,
         data: {
             dest

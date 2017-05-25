@@ -11,14 +11,14 @@ export const assimlate = () => ({
     type: ASSIMILATE
 });
 
-export const dock = (dispatch, src, dest) => {
+export const dock = (dispatch, dest) => {
     const pattern = /^(\d{1,3}\.){3}\d{1,3}$/;
-    if (!(pattern.test(src) && pattern.test(dest))) {
+    if (!pattern.test(dest)) {
         return;
     }
     $.ajax({
         type: 'POST',
-        url: `http://${src}:8000/dock`,
+        url: `http://${dest}:8000/dock`,
         timeout: 1000,
         data: {
             dest
@@ -40,7 +40,6 @@ export const dock = (dispatch, src, dest) => {
             blocks,
             xml,
             code,
-            src,
             dest,
             inputs
         });

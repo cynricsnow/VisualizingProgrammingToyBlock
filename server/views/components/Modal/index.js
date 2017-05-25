@@ -8,10 +8,9 @@ import { dock } from '../../redux/actions/dock';
     null,
     dispatch => ({
         handleDock(e) {
-            let { src, dest } = this.refs;
-            src = src.value ? src.value : src.placeholder;
+            let { dest } = this.refs;
             dest = dest.value ? dest.value : dest.placeholder;
-            dock(dispatch, src, dest);
+            dock(dispatch, dest);
             $('#dockModal').modal('hide');
         }
     })
@@ -30,10 +29,6 @@ class Modal extends Component {
                         </div>
                         <div className='modal-body'>
                             <form>
-                                <div className='form-group'>
-                                    <label className='control-label'>本设备IP:</label>
-                                    <input type='text' className='form-control' ref='src' placeholder='127.0.0.1'/>
-                                </div>
                                 <div className='form-group'>
                                     <label className='control-label'>编程积木局域网IP:</label>
                                     <input type='text' className='form-control' ref='dest' placeholder='192.168.0.1' />
