@@ -1,6 +1,8 @@
 'use strict'
 const DOMParser = require('xmldom').DOMParser;
 const XMLSerializer = require('xmldom').XMLSerializer;
+const data = require('./data_pb.js');
+const Data = data.Data;
 
 const START = 1;
 const END = 2;
@@ -81,6 +83,17 @@ const SYMBOL_TYPES_TEXT = [
 ];
 
 let flag = 1;
+
+const bytesToData = (bytes) => {
+    const blockList = Data.deserializeBinary(bytes).getBlockList();
+    const array = [];
+    for (let i = 0; i < blockList.length; i++) {
+        let type = blockList[i].getType();
+        let value = blockList[i].getValue();
+        array.push({type, value});
+    }
+    return array;
+}
 
 const dataToBlocks = (data) => {
     const array = data.concat();
@@ -862,5 +875,5 @@ const XMLToData = (xml) => {
 }
 
 module.exports = {
-    dataToBlocks, processData, recoverData, dataToTree, treeToXML, TreeNodeToCode, XMLToData
+    bytesToData, dataToBlocks, processData, recoverData, dataToTree, treeToXML, TreeNodeToCode, XMLToData
 }

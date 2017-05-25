@@ -30,7 +30,7 @@ export const dock = (dispatch, src, dest) => {
             url: '/api/dock',
             async: false,
             data: {
-                blocks: data.blocks,
+                bytes: data.bytes,
                 inputs: data.inputs
             }
         }).responseText);

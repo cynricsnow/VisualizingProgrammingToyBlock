@@ -2,12 +2,12 @@
 const express = require('express');
 const router = express.Router();
 
-const { dataToBlocks, processData, recoverData, dataToTree, treeToXML, TreeNodeToCode, XMLToData } = require('../common/convert');
+const { bytesToData, dataToBlocks, processData, recoverData, dataToTree, treeToXML, TreeNodeToCode, XMLToData } = require('../common/convert');
 
 router.post('/dock', (req, res) => {
-    const toy = req.body.blocks;
+    const data = bytesToData(req.body.bytes);
     const inputs = req.body.inputs;
-    const ripeData = processData(toy);
+    const ripeData = processData(data);
     const blocks = dataToBlocks(ripeData);
     const root = dataToTree(ripeData);
     const xml = treeToXML(root);

@@ -18,17 +18,9 @@ app.get('/', function (req, res) {
 
 app.post('/dock', (req, res) => {
     console.log(req.body);
-    const blockArray = Data.deserializeBinary(bytes).getBlockList();
-    const array = [];
-    for (let i = 0; i < blockArray.length; i++) {
-        let type = blockArray[i].getType();
-        let value = blockArray[i].getValue();
-        array.push({type, value});
-    }
-    console.log(array);
     const inputs = [{type:'温度', value: ' ? 度'}, {type: '超声波', value: ' ? 厘米'}];
     res.setHeader('Access-Control-Allow-Origin','*');
-    res.status(200).send({blocks: array, inputs});
+    res.status(200).send({bytes, inputs});
 })
 
 app.post('/input_distance', (req, res) => {
