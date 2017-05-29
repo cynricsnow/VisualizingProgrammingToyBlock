@@ -1,0 +1,17 @@
+{
+  "name": "pc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "packager": "electron-packager ./ electron-quick-start --win32 --out ./pack --electron-version 1.6.2 --overwrite --icon=./logo.ico"
+  },
+  "keywords": [],
+  "author": "Cynric <cynricsnow@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^1.6.10",
+    "electron-packager": "^8.7.0"
+  }
+}
