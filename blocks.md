@@ -1,12 +1,10 @@
-+ start
-+ end
-+ input
-+ output
-+ number
-
-
-+ symbol
-+ if
-+ else
-+ for
-+ while
++ START
++ END
++ INPUT
++ OUTPUT
++ NUMBER
++ SYMBOL
++ IF
++ ELSE
++ FOR
++ WHILE
